@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+
+              <field name="id" type="text" default="0" label="COM_DZTOUR_FORM_LBL_ORDER_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="tourid" type="sql" class="inputbox"
+        
+            label="COM_DZTOUR_FORM_LBL_ORDER_TOURID"
+            description="COM_DZTOUR_FORM_DESC_ORDER_TOURID" 
+        
+        
+        
+        
+        query="SELECT 0 AS `id`, '- Select Tour -' AS `title` UNION SELECT `id`, `title` FROM `#__dztour_tours`" key_field="id" value_field="title"
+         /> 
+
+       <field name="filter_tourid" type="sql" class="inputbox"
+            onchange="this.form.submit();"
+            query="SELECT 0 AS `id`, '- Select Tour -' AS `title` UNION SELECT `id`, `title` FROM `#__dztour_tours`" key_field="id" value_field="title"
+             /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_DZTOUR_FORM_LBL_ORDER_CREATED_BY"
+            description="COM_DZTOUR_FORM_DESC_ORDER_CREATED_BY"  /> 
+
+       <field name="created" type="timecreated" default="" 
+            label="COM_DZTOUR_FORM_LBL_ORDER_CREATED"
+            description="COM_DZTOUR_FORM_DESC_ORDER_CREATED"  /> 
+
+       <field name="modified" type="timeupdated" default="" 
+            label="COM_DZTOUR_FORM_LBL_ORDER_MODIFIED"
+            description="COM_DZTOUR_FORM_DESC_ORDER_MODIFIED"  /> 
+
+       <field name="modified_by" type="text" size="40" class="inputbox"
+        
+            label="COM_DZTOUR_FORM_LBL_ORDER_MODIFIED_BY"
+            description="COM_DZTOUR_FORM_DESC_ORDER_MODIFIED_BY" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="name" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_NAME"
+            description="COM_DZTOUR_FORM_DESC_ORDER_NAME" 
+                
+                
+                
+            filter="string" /> 
+
+       <field name="phone" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_PHONE"
+            description="COM_DZTOUR_FORM_DESC_ORDER_PHONE" 
+                
+                
+                 /> 
+
+       <field name="address" type="textarea"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_ADDRESS"
+            description="COM_DZTOUR_FORM_DESC_ORDER_ADDRESS" 
+                
+                
+                
+            cols="100"
+            rows="8" /> 
+
+       <field name="email" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_EMAIL"
+            description="COM_DZTOUR_FORM_DESC_ORDER_EMAIL" 
+                
+                
+                
+            filter="string" /> 
+
+       <field name="adults" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_ADULTS"
+            description="COM_DZTOUR_FORM_DESC_ORDER_ADULTS" 
+                
+                
+                 required="true" 
+            class="validate-numeric"
+            filter="uint" /> 
+
+       <field name="children" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_CHILDREN"
+            description="COM_DZTOUR_FORM_DESC_ORDER_CHILDREN" 
+                
+                
+                 required="true" 
+            class="validate-numeric"
+            filter="uint" /> 
+
+       <field name="start_date" type="calendar"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_START_DATE"
+            description="COM_DZTOUR_FORM_DESC_ORDER_START_DATE" 
+                
+                
+                 required="true"  /> 
+
+       <field name="end_date" type="calendar"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_END_DATE"
+            description="COM_DZTOUR_FORM_DESC_ORDER_END_DATE" 
+                
+                
+                 required="true"  /> 
+
+       <field name="comment" type="textarea"
+                
+            label="COM_DZTOUR_FORM_LBL_ORDER_COMMENT"
+            description="COM_DZTOUR_FORM_DESC_ORDER_COMMENT" 
+                
+                
+                
+            cols="100"
+            rows="8"
+            filter="safehtml" /> 
+
+       <field name="params" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_ORDER_PARAMS"
+            description="COM_DZTOUR_FORM_DESC_ORDER_PARAMS"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" /> 
+
+ </fieldset> 
+
+ <fieldset 
+                        name="accesscontrol">
+                       <field name="asset_id" type="hidden" filter="unset" />
+                       <field name="rules"
+                            type="rules"
+                            label="JFIELD_RULES_LABEL"
+                            translate_label="false"
+                            filter="rules"
+                            validate="rules"
+                            class="inputbox"
+                            component="com_dztour"
+                            section="order"
+                        />
+
+    </fieldset>
+
+</form>

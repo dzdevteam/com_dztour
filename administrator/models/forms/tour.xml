@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+
+              <field name="id" type="text" default="0" label="COM_DZTOUR_FORM_LBL_TOUR_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="access" type="accesslevel"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_ACCESS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_ACCESS" 
+                
+                
+                
+            filter="raw" /> 
+
+ 
+        <field name="filter_access" type="accesslevel" onchange="this.form.submit();" /> 
+
+       <field name="access" type="accesslevel"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_ACCESS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_ACCESS" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="language" type="language"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_LANGUAGE"
+            description="COM_DZTOUR_FORM_DESC_TOUR_LANGUAGE" 
+                
+                
+                
+            filter="raw"
+            client="true" /> 
+
+       <field name="created" type="timecreated" default="" 
+            label="COM_DZTOUR_FORM_LBL_TOUR_CREATED"
+            description="COM_DZTOUR_FORM_DESC_TOUR_CREATED"  /> 
+
+       <field name="created_by" type="createdby" default="" 
+            label="COM_DZTOUR_FORM_LBL_TOUR_CREATED_BY"
+            description="COM_DZTOUR_FORM_DESC_TOUR_CREATED_BY"  /> 
+
+       <field name="modified" type="timeupdated" default="" 
+            label="COM_DZTOUR_FORM_LBL_TOUR_MODIFIED"
+            description="COM_DZTOUR_FORM_DESC_TOUR_MODIFIED"  /> 
+
+       <field name="modified_by" type="text" size="40" class="inputbox"
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_MODIFIED_BY"
+            description="COM_DZTOUR_FORM_DESC_TOUR_MODIFIED_BY" 
+        
+        
+        
+        filter="safehtml" /> 
+
+       <field name="title" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_TITLE"
+            description="COM_DZTOUR_FORM_DESC_TOUR_TITLE" 
+                
+                
+                 required="true" 
+            filter="raw"
+            maxlength="64" /> 
+
+       <field name="alias" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_ALIAS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_ALIAS" 
+                
+                
+                
+            filter="raw" /> 
+
+       <field name="featured" type="checkbox"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_FEATURED"
+            description="COM_DZTOUR_FORM_DESC_TOUR_FEATURED" 
+                
+                
+                
+            value="1"
+            filter="raw" /> 
+
+       <field name="on_offer" type="checkbox"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_ON_OFFER"
+            description="COM_DZTOUR_FORM_DESC_TOUR_ON_OFFER" 
+                
+                
+                
+            value="1"
+            filter="raw" /> 
+
+       <field name="price" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_PRICE"
+            description="COM_DZTOUR_FORM_DESC_TOUR_PRICE" 
+                
+                
+                
+            filter="int" /> 
+
+       <field name="saleoff_price" type="text"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_SALEOFF_PRICE"
+            description="COM_DZTOUR_FORM_DESC_TOUR_SALEOFF_PRICE" 
+                
+                
+                
+            class="validate-numeric"
+            filter="int" /> 
+
+       <field name="duration" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_DURATION"
+            description="COM_DZTOUR_FORM_DESC_TOUR_DURATION"  /> 
+
+       <field name="typeid" type="category"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_TYPEID"
+            description="COM_DZTOUR_FORM_DESC_TOUR_TYPEID" 
+                
+                
+                
+            extension="com_dztour.tours.typeid"
+            filter="raw" /> 
+
+ 
+        <field name="filter_typeid" type="category"
+            label="COM_DZTOUR_FORM_LBL_TOUR_TYPEID"
+            description="COM_DZTOUR_FORM_DESC_TOUR_TYPEID"  extension="com_dztour.tours.typeid" show_root="1" onchange="this.form.submit();" /> 
+
+       <field name="locationid" type="category"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID"
+            description="COM_DZTOUR_FORM_DESC_TOUR_LOCATIONID" 
+                
+                
+                
+            extension="com_dztour.tours.locationid"
+            filter="raw" /> 
+
+ 
+        <field name="filter_locationid" type="category"
+            label="COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID"
+            description="COM_DZTOUR_FORM_DESC_TOUR_LOCATIONID"  extension="com_dztour.tours.locationid" show_root="1" onchange="this.form.submit();" /> 
+
+       <field name="descriptions" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_DESCRIPTIONS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_DESCRIPTIONS"  /> 
+
+       <field name="images" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_IMAGES"
+            description="COM_DZTOUR_FORM_DESC_TOUR_IMAGES"  /> 
+
+       <field name="metadesc" type="textarea"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_METADESC"
+            description="COM_DZTOUR_FORM_DESC_TOUR_METADESC" 
+                
+                
+                
+            cols="100"
+            rows="8"
+            filter="raw" /> 
+
+       <field name="metakey" type="textarea"
+                
+            label="COM_DZTOUR_FORM_LBL_TOUR_METAKEY"
+            description="COM_DZTOUR_FORM_DESC_TOUR_METAKEY" 
+                
+                
+                
+            cols="100"
+            rows="8"
+            filter="raw" /> 
+
+       <field name="metadata" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_METADATA"
+            description="COM_DZTOUR_FORM_DESC_TOUR_METADATA"  /> 
+
+       <field name="params" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_DZTOUR_FORM_LBL_TOUR_PARAMS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_PARAMS"  /> 
+
+         <field
+        name="state"
+        type="list"
+        label="JSTATUS"
+        description="JFIELD_PUBLISHED_DESC"
+        class="inputbox"
+        size="1"
+        default="1">
+        <option value="1">JPUBLISHED</option>
+        <option value="0">JUNPUBLISHED</option>
+    </field> 
+
+                        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" /> 
+
+ </fieldset> 
+
+ <fieldset 
+                        name="accesscontrol">
+                       <field name="asset_id" type="hidden" filter="unset" />
+                       <field name="rules"
+                            type="rules"
+                            label="JFIELD_RULES_LABEL"
+                            translate_label="false"
+                            filter="rules"
+                            validate="rules"
+                            class="inputbox"
+                            component="com_dztour"
+                            section="tour"
+                        />
+
+    </fieldset>
+
+</form>
