@@ -166,6 +166,12 @@
             </fieldset>
         </fields>
 
+        <field
+            name="tags" type="tag"
+            label="COM_DZTOUR_FORM_LBL_TOUR_TAGS"
+            description="COM_DZTOUR_FORM_DESC_TOUR_TAGS"
+            multiple="true" />
+
         <field name="metakey" type="textarea"
             label="JFIELD_META_KEYWORDS_LABEL" description="JFIELD_META_KEYWORDS_DESC"
             class="inputbox" rows="3" cols="30" labelclass="control-label" />

@@ -191,6 +191,12 @@ class DztourModeltour extends JModelAdmin
             $registry = new JRegistry();
             $registry->loadString($item->metadata);
             $item->metadata = $registry->toArray();
+            
+            if (!empty($item->id))
+            {
+                $item->tags = new JHelperTags;
+                $item->tags->getTagIds($item->id, 'com_dztour.tour');
+            }
         }
 
         return $item;

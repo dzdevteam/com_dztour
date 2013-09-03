@@ -57,3 +57,4 @@ CREATE TABLE IF NOT EXISTS `#__dztour_orders` (
 PRIMARY KEY (`id`)
 ) DEFAULT COLLATE=utf8_general_ci;
 
+INSERT INTO `#__content_types` (`type_id`, `type_title`, `type_alias`, `table`, `rules`, `field_mappings`, `router`) VALUES (NULL, 'DZ Tour - Tour', 'com_dztour.tour', '{"special":{"dbtable":"#__dztour_tours","key":"id","type":"Tour","prefix":"DZPhotoTable","config":"array()"}}', '', '{"common":[{"core_content_item_id":"id","core_title":"title","core_state":"state","core_alias":"alias", "core_params":"params", "core_ordering":"ordering", "asset_id":"asset_id"}]}', 'DZTourHelperRoute::getTourRoute');

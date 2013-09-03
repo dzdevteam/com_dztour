@@ -22,6 +22,9 @@ class DztourTabletour extends JTable {
      */
     public function __construct(&$db) {
         parent::__construct('#__dztour_tours', 'id', $db);
+        
+        JTableObserverTags::createObserver($this, array('typeAlias' => 'com_dztour.tour'));
+        JObserverMapper::addObserverClassToClass('JTableObserverTags', 'DZTourTableTour', array('typeAlias' => 'com_dztour.tour'));
     }
 
     /**
@@ -132,7 +135,7 @@ class DztourTabletour extends JTable {
         // Checking valid title and alias
         if (trim($this->title) == '')
         {
-            $this->setError(JText::_('COM_DZPHOTO_WARNING_PROVIDE_VALID_NAME'));
+            $this->setError(JText::_('COM_DZTOUR_WARNING_PROVIDE_VALID_NAME'));
             return false;
         }
 
@@ -152,7 +155,7 @@ class DztourTabletour extends JTable {
         $table = JTable::getInstance('Tour', 'DZTourTable');
         if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
         {
-            $this->setError(JText::_('COM_DZPHOTO_ERROR_UNIQUE_ALIAS'));
+            $this->setError(JText::_('COM_DZTOUR_ERROR_UNIQUE_ALIAS'));
             return false;
         }
         
