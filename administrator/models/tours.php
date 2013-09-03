@@ -26,10 +26,9 @@ class DztourModeltours extends JModelList {
     public function __construct($config = array()) {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
-                                'id', 'a.id',
+                'id', 'a.id',
                 'ordering', 'a.ordering',
                 'state', 'a.state',
-                'access', 'a.access',
                 'language', 'a.language',
                 'created', 'a.created',
                 'created_by', 'a.created_by',
@@ -41,16 +40,8 @@ class DztourModeltours extends JModelList {
                 'on_offer', 'a.on_offer',
                 'price', 'a.price',
                 'saleoff_price', 'a.saleoff_price',
-                'duration', 'a.duration',
                 'typeid', 'a.typeid',
-                'locationid', 'a.locationid',
-                'descriptions', 'a.descriptions',
-                'images', 'a.images',
-                'metadesc', 'a.metadesc',
-                'metakey', 'a.metakey',
-                'metadata', 'a.metadata',
-                'params', 'a.params',
-
+                'locationid', 'a.locationid'
             );
         }
 
@@ -205,6 +196,11 @@ class DztourModeltours extends JModelList {
     public function getItems() {
         $items = parent::getItems();
         
+        foreach ($items as &$item) {
+            $registry = new JRegistry();
+            $registry->loadString($item->duration);
+            $item->duration = $registry->toArray();
+        }
         return $items;
     }
 

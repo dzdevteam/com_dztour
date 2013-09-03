@@ -96,7 +96,9 @@
         <field name="typeid" type="category"
             label="COM_DZTOUR_FORM_LBL_TOUR_TYPEID"
             description="COM_DZTOUR_FORM_DESC_TOUR_TYPEID" 
-            extension="com_dztour.tours.typeid" /> 
+            extension="com_dztour.tours.typeid"> 
+            <option value="">COM_DZTOUR_OPTION_SELECT_TYPE</option>
+        </field>
  
         <field name="filter_typeid" type="category"
             label="COM_DZTOUR_FORM_LBL_TOUR_TYPEID"
@@ -105,7 +107,9 @@
         <field name="locationid" type="category"
             label="COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID"
             description="COM_DZTOUR_FORM_DESC_TOUR_LOCATIONID" 
-            extension="com_dztour.tours.locationid" /> 
+            extension="com_dztour.tours.locationid"> 
+            <option value="">COM_DZTOUR_OPTION_SELECT_LOCATION</option>
+        </field>
 
  
         <field name="filter_locationid" type="category"
@@ -156,7 +160,9 @@
                     name="album" type="category"
                     extension="com_dzphoto.images"
                     label="COM_DZTOUR_FORM_LBL_TOUR_IMAGES_ALBUM"
-                    description="COM_DZTOUR_FORM_DESC_TOUR_IMAGES_ALBUM" />                
+                    description="COM_DZTOUR_FORM_DESC_TOUR_IMAGES_ALBUM">
+                    <option value="">COM_DZTOUR_OPTION_SELECT_ALBUM</option>
+                </field>
             </fieldset>
         </fields>
 

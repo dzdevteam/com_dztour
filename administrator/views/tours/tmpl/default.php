@@ -105,26 +105,17 @@ if (!empty($this->extra_sidebar)) {
                         <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
                     </th>
                 <?php if (isset($this->items[0]->state)): ?>
-                    <th width="1%" class="nowrap center">
+                    <th class="nowrap center">
                         <?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
                     </th>
                 <?php endif; ?>
-                    
-                <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_ACCESS', 'a.access', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_TITLE', 'a.title', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_FEATURED', 'a.featured', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
+                <th class='nowrap center'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_ON_OFFER', 'a.on_offer', $listDirn, $listOrder); ?>
                 </th>
+                <th class='left' width="20%">
+                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_TITLE', 'a.title', $listDirn, $listOrder); ?>
+                </th>
+               
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_PRICE', 'a.price', $listDirn, $listOrder); ?>
                 </th>
@@ -132,16 +123,14 @@ if (!empty($this->extra_sidebar)) {
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_SALEOFF_PRICE', 'a.saleoff_price', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_DURATION', 'a.duration', $listDirn, $listOrder); ?>
+                <?php echo JText::_('COM_DZTOUR_TOURS_DURATION'); ?>
                 </th>
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_TYPEID', 'a.typeid', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_TOURS_LOCATIONID', 'a.locationid', $listDirn, $listOrder); ?>
-                </th>
-                    
-                    
+                </th>                    
                 <?php if (isset($this->items[0]->id)): ?>
                     <th width="1%" class="nowrap center hidden-phone">
                         <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -194,22 +183,17 @@ if (!empty($this->extra_sidebar)) {
                     <?php endif; ?>
                     </td>
                 <?php endif; ?>
-                    <td class="center hidden-phone">
-                        <?php echo JHtml::_('grid.id', $i, $item->id); ?>
-                    </td>
-                <?php if (isset($this->items[0]->state)): ?>
-                    <td class="center">
-                        <?php echo JHtml::_('jgrid.published', $item->state, $i, 'tours.', $canChange, 'cb'); ?>
-                    </td>
-                <?php endif; ?>
-                    
-                <td>
-
-                    <?php echo $item->access; ?>
+                <td class="center hidden-phone">
+                    <?php echo JHtml::_('grid.id', $i, $item->id); ?>
                 </td>
-                <td>
-
-                    <?php echo $item->created_by; ?>
+                <?php if (isset($this->items[0]->state)): ?>
+                <td class="center">
+                    <?php echo JHtml::_('jgrid.published', $item->state, $i, 'tours.', $canChange, 'cb'); ?>
+                    <?php echo JHtml::_('touradministrator.featured', $item->featured, $i, $canChange); ?>
+                </td>
+                <?php endif; ?>
+                <td class="center">
+                    <?php echo JHtml::_('touradministrator.offer', $item->on_offer, $i, $canChange); ?>
                 </td>
                 <td>
                 <?php if (isset($item->checked_out) && $item->checked_out) : ?>
@@ -223,31 +207,18 @@ if (!empty($this->extra_sidebar)) {
                 <?php endif; ?>
                 </td>
                 <td>
-
-                    <?php echo $item->featured; ?>
-                </td>
-                <td>
-
-                    <?php echo $item->on_offer; ?>
-                </td>
-                <td>
-
                     <?php echo $item->price; ?>
                 </td>
                 <td>
-
                     <?php echo $item->saleoff_price; ?>
                 </td>
                 <td>
-
-                    <?php echo $item->duration; ?>
+                    <?php foreach ($item->duration as $key => $value) echo $value.' '.$key.' '; ?>
                 </td>
                 <td>
-
                     <?php echo $item->typeid; ?>
                 </td>
                 <td>
-
                     <?php echo $item->locationid; ?>
                 </td>
 

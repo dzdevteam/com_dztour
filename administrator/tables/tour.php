@@ -66,6 +66,25 @@ class DztourTabletour extends JTable {
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
         }
+        
+        if (isset($array['images']) && is_array($array['images'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['images']);
+            $array['images'] = (string) $registry;
+        }
+        
+        if (isset($array['descriptions']) && is_array($array['descriptions'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['descriptions']);
+            $array['descriptions'] = (string) $registry;
+        }
+        
+        if (isset($array['duration']) && is_array($array['duration'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['duration']);
+            $array['duration'] = (string) $registry;
+        }
+        
         if(!JFactory::getUser()->authorise('core.admin', 'com_dztour.tour.'.$array['id'])){
             $actions = JFactory::getACL()->getActions('com_dztour','tour');
             $default_actions = JFactory::getACL()->getAssetRules('com_dztour.tour.'.$array['id'])->getData();
@@ -109,7 +128,66 @@ class DztourTabletour extends JTable {
             $this->ordering = self::getNextOrder();
         }
 
+        // Check for unique alias
+        // Checking valid title and alias
+        if (trim($this->title) == '')
+        {
+            $this->setError(JText::_('COM_DZPHOTO_WARNING_PROVIDE_VALID_NAME'));
+            return false;
+        }
+
+        if (trim($this->alias) == '')
+        {
+            $this->alias = $this->title;
+        }
+
+        $this->alias = $this->_stringURLSafe($this->alias);
+
+        if (trim(str_replace('-', '', $this->alias)) == '')
+        {
+            $this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+        }
+
+        // Verify that the alias is unique
+        $table = JTable::getInstance('Tour', 'DZTourTable');
+        if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
+        {
+            $this->setError(JText::_('COM_DZPHOTO_ERROR_UNIQUE_ALIAS'));
+            return false;
+        }
+        
         return parent::check();
+    }
+    
+    /**
+     * Overrides JTable::store to set modified data and user id.
+     *
+     * @param   boolean  $updateNulls  True to update fields even if they are null.
+     *
+     * @return  boolean  True on success.
+     */
+    public function store($updateNulls = false)
+    {
+        $date = JFactory::getDate();
+        $user = JFactory::getUser();
+        
+        if ($this->id) {
+            $this->modified = $date->toSql();
+            $this->modified_by = $user->get('id');
+        } else {
+            if (empty($this->created))
+                $this->created = $date->toSql();
+            if (empty($this->created_by))
+                $this->created_by = $user->get('id');
+        }
+        
+        $oldRules = $this->getRules();
+        if (empty($oldRules))
+        {
+            $this->setRules('{}');
+        }
+        
+        return parent::store($updateNulls);
     }
 
     /**
@@ -217,6 +295,20 @@ class DztourTabletour extends JTable {
         return $assetParentId;
     }
     
-    
+    /**
+     * Convert string into URL safe one
+     * @param string $url
+     *
+     * @return string Safe URL
+     */
+    protected function _stringURLSafe($url) {
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $url);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_| -]+/", '-', $clean);
+
+        return $clean;
+    }
 
 }

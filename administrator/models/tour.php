@@ -82,6 +82,88 @@ class DztourModeltour extends JModelAdmin
     }
 
     /**
+     * Method to toggle the featured setting of tours.
+     *
+     * @param   array    The ids of the items to toggle.
+     * @param   integer  The value to toggle to.
+     *
+     * @return  boolean  True on success.
+     */
+    public function featured($pks, $value = 0)
+    {
+        // Sanitize the ids.
+        $pks = (array) $pks;
+        JArrayHelper::toInteger($pks);
+
+        if (empty($pks))
+        {
+            $this->setError(JText::_('COM_DZTOUR_NO_ITEM_SELECTED'));
+            return false;
+        }
+
+        try
+        {
+            $db = $this->getDbo();
+            $query = $db->getQuery(true)
+                        ->update($db->quoteName('#__dztour_tours'))
+                        ->set('featured = ' . (int) $value)
+                        ->where('id IN (' . implode(',', $pks) . ')');
+            $db->setQuery($query);
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        $this->cleanCache();
+
+        return true;
+    }
+    
+    /**
+     * Method to toggle the "on offer" setting of tours.
+     *
+     * @param   array    The ids of the items to toggle.
+     * @param   integer  The value to toggle to.
+     *
+     * @return  boolean  True on success.
+     */
+    public function offer($pks, $value = 0)
+    {
+        // Sanitize the ids.
+        $pks = (array) $pks;
+        JArrayHelper::toInteger($pks);
+
+        if (empty($pks))
+        {
+            $this->setError(JText::_('COM_DZTOUR_NO_ITEM_SELECTED'));
+            return false;
+        }
+
+        try
+        {
+            $db = $this->getDbo();
+            $query = $db->getQuery(true)
+                        ->update($db->quoteName('#__dztour_tours'))
+                        ->set('on_offer = ' . (int) $value)
+                        ->where('id IN (' . implode(',', $pks) . ')');
+            $db->setQuery($query);
+            $db->execute();
+        }
+        catch (Exception $e)
+        {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        $this->cleanCache();
+
+        return true;
+    }
+    
+    /**
      * Method to get a single record.
      *
      * @param   integer The id of the primary key.
@@ -94,7 +176,21 @@ class DztourModeltour extends JModelAdmin
         if ($item = parent::getItem($pk)) {
 
             //Do any procesing on fields here if needed
-
+            $registry = new JRegistry();
+            $registry->loadString($item->images);
+            $item->images = $registry->toArray();
+            
+            $registry = new JRegistry();
+            $registry->loadString($item->descriptions);
+            $item->descriptions = $registry->toArray();
+            
+            $registry = new JRegistry();
+            $registry->loadString($item->duration);
+            $item->duration = $registry->toArray();
+            
+            $registry = new JRegistry();
+            $registry->loadString($item->metadata);
+            $item->metadata = $registry->toArray();
         }
 
         return $item;
