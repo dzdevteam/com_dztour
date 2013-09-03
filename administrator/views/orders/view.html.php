@@ -113,6 +113,7 @@ class DztourViewOrders extends JViewLegacy
                 //Filter for the field ".tourid;
         jimport('joomla.form.form');
         $options = array();
+        $options[] = JHtml::_('select.option', "", JText::_('COM_DZTOUR_OPTION_SELECT_TOUR'));
         JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
         $form = JForm::getInstance('com_dztour.order', 'order');
 
@@ -145,7 +146,7 @@ class DztourViewOrders extends JViewLegacy
                 }
             }
         }
-
+        
         JHtmlSidebar::addFilter(
             'Tour',
             'filter_tourid',
@@ -170,17 +171,14 @@ class DztourViewOrders extends JViewLegacy
         return array(
         'a.id' => JText::_('JGRID_HEADING_ID'),
         'a.tourid' => JText::_('COM_DZTOUR_ORDERS_TOURID'),
-        'a.state' => JText::_('JSTATUS'),
-        'a.checked_out' => JText::_('COM_DZTOUR_ORDERS_CHECKED_OUT'),
-        'a.checked_out_time' => JText::_('COM_DZTOUR_ORDERS_CHECKED_OUT_TIME'),
-        'a.name' => JText::_('COM_DZTOUR_ORDERS_NAME'),
-        'a.phone' => JText::_('COM_DZTOUR_ORDERS_PHONE'),
-        'a.address' => JText::_('COM_DZTOUR_ORDERS_ADDRESS'),
+        'a.state' => JText::_('JSTATUS'),        
+        'a.name' => JText::_('COM_DZTOUR_ORDERS_NAME'),        
         'a.email' => JText::_('COM_DZTOUR_ORDERS_EMAIL'),
         'a.adults' => JText::_('COM_DZTOUR_ORDERS_ADULTS'),
         'a.children' => JText::_('COM_DZTOUR_ORDERS_CHILDREN'),
+        'a.start_date' => JText::_('COM_DZTOUR_ORDERS_START_DATE'),
         'a.end_date' => JText::_('COM_DZTOUR_ORDERS_END_DATE'),
-        'a.comment' => JText::_('COM_DZTOUR_ORDERS_COMMENT'),
+        'a.created' => JText::_('COM_DZTOUR_ORDERS_CREATED'),
         );
     }
 

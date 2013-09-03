@@ -117,19 +117,16 @@ if (!empty($this->extra_sidebar)) {
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_NAME', 'a.name', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_PHONE', 'a.phone', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_ADDRESS', 'a.address', $listDirn, $listOrder); ?>
-                </th>
-                <th class='left'>
-                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_EMAIL', 'a.email', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_ADULTS', 'a.adults', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_CHILDREN', 'a.children', $listDirn, $listOrder); ?>
+                </th>
+                <th class='left'>
+                <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_START_DATE', 'a.start_date', $listDirn, $listOrder); ?>
                 </th>
                 <th class='left'>
                 <?php echo JHtml::_('grid.sort',  'COM_DZTOUR_ORDERS_END_DATE', 'a.end_date', $listDirn, $listOrder); ?>
@@ -199,9 +196,7 @@ if (!empty($this->extra_sidebar)) {
                         <?php echo JHtml::_('jgrid.published', $item->state, $i, 'orders.', $canChange, 'cb'); ?>
                     </td>
                 <?php endif; ?>
-                    
                 <td>
-
                     <?php echo $item->tourid; ?>
                 </td>
                 <td>
@@ -214,29 +209,25 @@ if (!empty($this->extra_sidebar)) {
                 <?php else : ?>
                     <?php echo $this->escape($item->name); ?>
                 <?php endif; ?>
+                    <br />
+                    <i class="icon-mobile"></i>&nbsp;<?php echo $item->phone; ?>
+                    <br />
+                    <i class="icon-mail"></i>&nbsp;<?php echo $item->email; ?>
                 </td>
                 <td>
-
-                    <?php echo $item->phone; ?>
-                </td>
-                <td>
-
                     <?php echo $item->address; ?>
-                </td>
-                <td>
-
-                    <?php echo $item->email; ?>
                 </td>
                 <td>
 
                     <?php echo $item->adults; ?>
                 </td>
                 <td>
-
                     <?php echo $item->children; ?>
                 </td>
                 <td>
-
+                    <?php echo $item->start_date; ?>
+                </td>
+                <td>
                     <?php echo $item->end_date; ?>
                 </td>
                 <td>
