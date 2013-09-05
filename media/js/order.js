@@ -1,8 +1,9 @@
 jQuery(document).ready(function(){
-    var alert_tpl = '<div class="alert"></div>',
+    var alert_tpl = '<div class="alert fade in"><a class="close" data-dismiss="alert" href="#">&times;</a></div>',
         displayAlert = function(message, classname) {
             jQuery("#alert-area").html(jQuery(alert_tpl).addClass(classname).append(message));
-        };
+        },
+        disable_handler = function() { return false; };
     
     // Validation for order form
     jQuery('#order-form').validate({
@@ -13,6 +14,11 @@ jQuery(document).ready(function(){
                 data: jQuery(form).serialize(),
                 success: function(data) {
                     displayAlert(data.message, 'alert-success');
+                    
+                    // Prevent form from submitting again
+                    jQuery(form).off('submit');
+                    jQuery(form).on('submit', disable_handler);
+                    jQuery('button', form).addClass('disabled');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     displayAlert(errorThrown, 'alert-danger');
