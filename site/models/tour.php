@@ -86,6 +86,19 @@ class DztourModelTour extends JModelForm
                 // Convert the JTable to a clean JObject.
                 $properties = $table->getProperties(1);
                 $this->_item = JArrayHelper::toObject($properties, 'JObject');
+                
+                // Convert json encoded fields to array
+                $registry = new JRegistry();
+                $registry->loadString($this->_item->duration);
+                $this->_item->duration = $registry->toArray();
+                
+                $registry = new JRegistry();
+                $registry->loadString($this->_item->descriptions);
+                $this->_item->descriptions = $registry->toArray();
+                
+                $registry = new JRegistry();
+                $registry->loadString($this->_item->images);
+                $this->_item->images = $registry->toArray();
             } elseif ($error = $table->getError()) {
                 $this->setError($error);
             }
@@ -100,7 +113,12 @@ class DztourModelTour extends JModelForm
         return JTable::getInstance($type, $prefix, $config);
     }     
 
-    
+    public function getOrderForm()
+    {
+        jimport('joomla.form.form');
+        JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
+        return JForm::getInstance('com_dztour.order', 'order', array('control' => 'order'));        
+    }
     /**
      * Method to check in an item.
      *
