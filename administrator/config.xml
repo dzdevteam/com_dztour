@@ -4,7 +4,7 @@
         label="COM_DZTOUR_COMPONENT_LABEL"
         description="COM_DZTOUR_COMPONENT_DESC"
     >
-
+        <field type="spacer" label="COM_DZTOUR_CONFIG_RECAPTCHA" />
         <field name="publickey"
             type="text"
             label="COM_DZTOUR_CONFIG_LBL_RECAPTCHA_PUBLIC_KEY"
@@ -13,7 +13,24 @@
             type="text"
             label="COM_DZTOUR_CONFIG_LBL_RECAPTCHA_PRIVATE_KEY"
             description="COM_DZTOUR_CONFIG_DESC_RECAPTCHA_PRIVATE_KEY" />
-
+        
+        <field type="spacer" label="COM_DZTOUR_CONFIG_NOTIFICATION" />
+        <field name="subject"
+            type="text"
+            default="A new tour order has just been placed!"
+            label="COM_DZTOUR_CONFIG_LBL_SUBJECT"
+            description="COM_DZTOUR_CONFIG_DESC_SUBJECT" />
+        
+        <field name="body"
+            type="textarea" filter="safehtml"
+            default="" class="span6" rows="10"
+            label="COM_DZTOUR_CONFIG_LBL_BODY"
+            description="COM_DZTOUR_CONFIG_DESC_BODY" />
+        
+        <field name="receivers"
+            type="textarea" class="span6" rows="10"
+            label="COM_DZTOUR_CONFIG_LBL_RECEIVERS"
+            description="COM_DZTOUR_CONFIG_DESC_RECEIVERS" />
     </fieldset>
 
     <fieldset name="permissions"
