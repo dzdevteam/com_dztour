@@ -12,7 +12,26 @@ defined('_JEXEC') or die;
 //Load admin language file
 $lang = JFactory::getLanguage();
 $lang->load('com_dztour', JPATH_ADMINISTRATOR);
-
+if ( (boolean) $this->params->get('show_order', 1) ) {
+    JHtml::_('jquery.framework'); // Ensure jquery to be loaded first
+    
+    // JQuery Validation
+    JHtml::_('script', 'com_dztour/jquery.validate.min.js', true, true);
+    JHtml::_('script', 'com_dztour/messages_vi.js', true, true);
+    
+    // Bootstrap datepicker
+    JHtml::_('script', 'com_dztour/bootstrap-datepicker.js',  true, true);
+    JHtml::_('stylesheet', 'com_dztour/datepicker.css', true, true);
+    
+    // reCaptcha
+    require_once JPATH_COMPONENT.'/helpers/recaptchalib.php';
+    $publickey = $this->params->get('publickey');
+    
+    // Order function
+    JFactory::getDocument()->addScriptDeclaration('Joomla.loadingGIF = "'.JUri::root().'/media/system/images/modal/spinner.gif'.'"');
+    JHtml::_('script', 'com_dztour/order.js', true, true);
+        
+}
 ?>
 <?php if ($this->item) : ?>
 
@@ -71,14 +90,6 @@ $lang->load('com_dztour', JPATH_ADMINISTRATOR);
     </div>
     
     <?php if ( (boolean) $this->params->get('show_order', 1) ) : ?>
-    <?php
-        JHtml::_('jquery.ui'); // Ensure jquery to be loaded first
-        JHtml::_('script', 'com_dztour/jquery.validate.min.js', true, true);
-        JHtml::_('script', 'com_dztour/messages_vi.js', true, true);
-        JHtml::_('script', 'com_dztour/bootstrap-datepicker.js',  true, true);
-        JHtml::_('stylesheet', 'com_dztour/datepicker.css', true, true);
-        JHtml::_('script', 'com_dztour/order.js', true, true);
-    ?>
     <form id="order-form" action="<?php echo JRoute::_('index.php?option=com_dztour&task=tour.order&format=json'); ?>" method="POST">
         <input type="hidden" name="order[id]" value="0" />
         <input type="hidden" name="order[tourid]" value="<?php echo $this->item->id; ?>" />
@@ -99,6 +110,7 @@ $lang->load('com_dztour', JPATH_ADMINISTRATOR);
                 <?php echo $this->form->getLabel('address'); ?>
                 <?php echo $this->form->getInput('address'); ?>
                 
+                <?php echo recaptcha_get_html($publickey); ?>
             </div>
             <div class="span6">
                 

@@ -3,11 +3,15 @@ jQuery(document).ready(function(){
         displayAlert = function(message, classname) {
             jQuery("#alert-area").html(jQuery(alert_tpl).addClass(classname).append(message));
         },
+        displayLoading = function() {
+            jQuery("#alert-area").html('<img src="' + Joomla.loadingGIF + '" />');
+        }
         disable_handler = function() { return false; };
     
     // Validation for order form
     jQuery('#order-form').validate({
         submitHandler: function(form) {
+            displayLoading();
             jQuery.ajax({
                 type: form.method,
                 url: form.action,
@@ -22,6 +26,7 @@ jQuery(document).ready(function(){
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     displayAlert(errorThrown, 'alert-danger');
+                    Recaptcha.reload();
                 }
             });
         },
