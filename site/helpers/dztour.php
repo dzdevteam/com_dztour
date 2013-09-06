@@ -9,13 +9,8 @@
 
 defined('_JEXEC') or die;
 
-abstract class DztourHelper
+abstract class DZTourHelper
 {
-    public static function myFunction()
-    {
-        $result = 'Something';
-        return $result;
-    }
-
+    
 }
 

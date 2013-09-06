@@ -80,7 +80,9 @@ $lang->load('com_dztour', JPATH_ADMINISTRATOR);
         JHtml::_('script', 'com_dztour/order.js', true, true);
     ?>
     <form id="order-form" action="<?php echo JRoute::_('index.php?option=com_dztour&task=tour.order&format=json'); ?>" method="POST">
+        <input type="hidden" name="order[id]" value="0" />
         <input type="hidden" name="order[tourid]" value="<?php echo $this->item->id; ?>" />
+        <input type="hidden" name="order[state]" value="0" />
         <legend>Order this tour</legend>
         <div id="alert-area"></div>
         <div class="row-fluid">
