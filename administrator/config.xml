@@ -14,7 +14,7 @@
             label="COM_DZTOUR_CONFIG_LBL_RECAPTCHA_PRIVATE_KEY"
             description="COM_DZTOUR_CONFIG_DESC_RECAPTCHA_PRIVATE_KEY" />
         
-        <field type="spacer" label="COM_DZTOUR_CONFIG_NOTIFICATION" />
+        <field type="spacer" label="COM_DZTOUR_CONFIG_ADMIN_NOTIFICATION" />
         <field name="subject"
             type="text"
             default="A new tour order has just been placed!"
@@ -22,7 +22,7 @@
             description="COM_DZTOUR_CONFIG_DESC_SUBJECT" />
         
         <field name="body"
-            type="textarea" filter="safehtml"
+            type="editor" filter="safehtml"
             default="" class="span6" rows="10"
             label="COM_DZTOUR_CONFIG_LBL_BODY"
             description="COM_DZTOUR_CONFIG_DESC_BODY" />
@@ -31,6 +31,20 @@
             type="textarea" class="span6" rows="10"
             label="COM_DZTOUR_CONFIG_LBL_RECEIVERS"
             description="COM_DZTOUR_CONFIG_DESC_RECEIVERS" />
+        
+        <field type="spacer" label="COM_DZTOUR_CONFIG_CUSTOMER_NOTIFICATION" />
+        <field name="confirmsubject"
+            type="text"
+            default="You have ordered a tour from our service!"
+            label="COM_DZTOUR_CONFIG_LBL_SUBJECT"
+            description="COM_DZTOUR_CONFIG_DESC_SUBJECT" />
+        
+        <field name="confirmbody"
+            type="editor" filter="safehtml"
+            default="" class="span6" rows="10"
+            label="COM_DZTOUR_CONFIG_LBL_BODY"
+            description="COM_DZTOUR_CONFIG_DESC_BODY" />
+        
     </fieldset>
 
     <fieldset name="permissions"
