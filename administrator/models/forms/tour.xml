@@ -20,7 +20,9 @@
         <field name="language" type="language"
             label="COM_DZTOUR_FORM_LBL_TOUR_LANGUAGE"
             description="COM_DZTOUR_FORM_DESC_TOUR_LANGUAGE"
-            client="true" /> 
+            client="true"> 
+            <option value="*">JALL</option>
+        </field>
 
         <field name="created" type="calendar"
             format="%Y-%m-%d %H:%M:%S" filter="user_utc"
