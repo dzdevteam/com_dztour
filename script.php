@@ -46,9 +46,9 @@ class com_dztourInstallerScript
             $params['confirmsubject'] = "You have ordered a tour from our service!";
             $params['confirmbody'] = $params['body'];
             
-            echo '<div class="alert alert-info">Setting up default email templates and subjects...</div>';
+            echo '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button>Setting up default email templates and subjects...</div>';
             $this->setParams($params);
-            echo '<div class="alert alert-success"><strong>DZ Product has been configured successfully!</strong></div>';
+            echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><strong>DZ Product has been configured successfully!</strong></div>';
         }
     }
     
