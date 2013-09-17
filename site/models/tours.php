@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
+require_once JPATH_SITE.'/components/com_dztour/helpers/route.php';
 
 /**
  * Methods supporting a list of Dztour records.
@@ -260,7 +261,13 @@ class DztourModelTours extends JModelList {
     }
 
     public function getItems() {
-        return parent::getItems();
+        $items = parent::getItems();
+        
+        foreach ($items as &$item) {
+            $item->link = DZTourHelperRoute::getTourRoute($item->id);
+        }
+        
+        return $items;
     }
 
 }
