@@ -6,7 +6,7 @@
         </message>
     </layout>
     <fields name="params">
-        <fieldset name="basic">
+        <fieldset name="filtering" label="COM_DZTOUR_CONFIG_FIELDSET_FILTERING">
             <field
                 name="tours_display_items"
                 type="radio" default="all" class="btn-group"
@@ -40,6 +40,11 @@
                 description="COM_DZTOUR_CONFIG_TOURS_DESC_LOCATION">
                 <option value="">COM_DZTOUR_OPTION_SELECT_LOCATION</option>
             </field>
+            <field
+                name="tours_tags" type="tag" 
+                multiple="true" custom="deny" mode="nested"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_TAGS"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_TAGS" />
             
             <field type="spacer" />
             <field

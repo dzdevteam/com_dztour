@@ -112,8 +112,13 @@ class DztourModelTours extends JModelList {
         }
         
         $location = $app->getUserStateFromRequest($this->context . '.filter.location', 'filter_locationid', $mergedParams->get('tours_locationid'));
-        if ($type) {
+        if ($location) {
             $this->setState('filter.locationid', $location);
+        }
+        
+        $tags = $app->getUserStateFromRequest($this->context . '.filter.tags', 'filter_tags', $mergedParams->get('tours_tags', array()));
+        if (!empty($tags)) {
+            $this->setState('filter.tags', $tags);
         }
         
         $display_items = $app->getUserStateFromRequest($this->context . '.filter.display_items', 'filter_display_items', $mergedParams->get('tours_display_items', 'all'));
@@ -236,7 +241,14 @@ class DztourModelTours extends JModelList {
                 $query->where("a.locationid = ". (int) $filter_locationid);
             }
         }
-
+        
+        // Filter by tags
+        $filter_tags = $this->getState('filter.tags', array());
+        if (!empty($filter_tags) && is_array($filter_tags)) {
+            JArrayHelper::toInteger($filter_tags);
+            $query->join('INNER', '#__contentitem_tag_map as ct ON ct.content_item_id = a.id AND ct.type_alias = \'com_dztour.tour\' AND tag_id IN (' . implode(',', $filter_tags) . ')');
+        }
+        
         // Filter by language
         if ($this->getState('filter.language')) {
             $query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
