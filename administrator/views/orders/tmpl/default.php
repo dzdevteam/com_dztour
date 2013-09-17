@@ -193,7 +193,7 @@ if (!empty($this->extra_sidebar)) {
                     </td>
                 <?php if (isset($this->items[0]->state)): ?>
                     <td class="center">
-                        <?php echo JHtml::_('jgrid.published', $item->state, $i, 'orders.', $canChange, 'cb'); ?>
+                        <?php echo JHtml::_('touradministrator.published', $item->state, $i, 'orders.', $canChange, 'cb'); ?>
                     </td>
                 <?php endif; ?>
                 <td>
