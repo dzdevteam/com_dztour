@@ -73,14 +73,12 @@
 
         <field name="price" type="text" class="validate-numeric"
             label="COM_DZTOUR_FORM_LBL_TOUR_PRICE"
-            description="COM_DZTOUR_FORM_DESC_TOUR_PRICE" 
-            filter="int" /> 
+            description="COM_DZTOUR_FORM_DESC_TOUR_PRICE" /> 
 
         <field name="saleoff_price" type="text"
             label="COM_DZTOUR_FORM_LBL_TOUR_SALEOFF_PRICE"
             description="COM_DZTOUR_FORM_DESC_TOUR_SALEOFF_PRICE" 
-            class="validate-numeric"
-            filter="int" /> 
+            class="validate-numeric" /> 
 
         <fields name="duration"> 
             <fieldset name="duration">
