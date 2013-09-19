@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__dztour_tours` (
 `price` VARCHAR(255)  NOT NULL ,
 `saleoff_price` VARCHAR(255)  NOT NULL ,
 `duration` TEXT NOT NULL ,
-`typeid` INT(11)  NOT NULL ,
+`typeid` TEXT  NOT NULL ,
 `locationid` INT(11)  NOT NULL ,
 `descriptions` TEXT NOT NULL ,
 `images` TEXT NOT NULL ,

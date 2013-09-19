@@ -27,11 +27,10 @@
             
             <field type="spacer" />
             <field
-                name="tours_typeid"
+                name="tours_typeid" multiple="true"
                 type="category" extension="com_dztour.tours.typeid"
                 label="COM_DZTOUR_CONFIG_TOURS_LBL_TYPE"
                 description="COM_DZTOUR_CONFIG_TOURS_DESC_TYPE">
-                <option value="">COM_DZTOUR_OPTION_SELECT_TYPE</option>
             </field>
             <field
                 name="tours_locationid"

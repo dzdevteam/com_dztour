@@ -36,8 +36,6 @@ class DztourTabletour extends JTable {
      * @since   1.5
      */
     public function bind($array, $ignore = '') {
-
-        
         $input = JFactory::getApplication()->input;
         $task = $input->getString('task', '');
         if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_dztour.tour.'.$array['id']) && $array['state'] == 1)){
@@ -57,6 +55,12 @@ class DztourTabletour extends JTable {
         if (!isset($array['on_offer'])){
             $array['on_offer'] = 0;
         }
+        
+        // Multiple types
+        if (isset($array['typeid']) && is_array($array['typeid'])) {
+            $array['typeid'] = implode(',', $array['typeid']);
+        }
+        
 
         if (isset($array['params']) && is_array($array['params'])) {
             $registry = new JRegistry();

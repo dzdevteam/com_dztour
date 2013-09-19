@@ -203,26 +203,14 @@ class DztourModelTours extends JModelList {
         
         //Filtering typeid
         $filter_typeid = $this->state->get("filter.typeid");
-        if ($filter_typeid) {
-            $query->where("a.typeid = '".$filter_typeid."'");
-        }
-        
-        //Filtering typeid
-        $filter_typeid = $this->getState('filter.typeid', 'root');
-        if (is_numeric($filter_typeid)) {
-            // Add subcategories check
-            $includeSubcategories = $this->getState('filter.subtypes', true);
-            
-            if ($includeSubcategories) {
-                $subQuery = $db->getQuery(true)
-                               ->select('sub.id')
-                               ->from('#__categories as sub')
-                               ->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt')
-                               ->where('this.id = ' . (int) $filter_typeid);
-                $query->where("( a.typeid = ". (int) $filter_typeid . " OR a.typeid IN (" . (string) $subQuery . ") )");
-            } else {
-                $query->where("a.typeid = ". (int) $filter_typeid);
-            }
+        if (is_array($filter_typeid)) {
+            $where = array();
+            foreach ($filter_typeid as $typeid)
+                $where[] = "FIND_IN_SET($typeid, a.typeid)";
+            if (!empty($where))
+            $query->where( '(' . implode(' OR ', $where) . ')' );
+        } elseif (is_numeric($filter_typeid)) {
+            $query->where('a.typeid = '.$filter_typeid);
         }
         
         //Filtering locationid

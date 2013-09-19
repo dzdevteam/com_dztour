@@ -133,8 +133,9 @@ class DztourModeltours extends JModelList {
         $query->select('created_by.name AS created_by');
         $query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
         // Join over the category 'typeid'
-        $query->select('typeid.title AS typeid');
-        $query->join('LEFT', '#__categories AS typeid ON typeid.id = a.typeid');
+        $query->select("GROUP_CONCAT(t.title SEPARATOR ', ') AS types");
+        $query->join('LEFT', "#__categories AS t ON FIND_IN_SET(t.id, a.typeid)");
+        $query->group('a.id');
         // Join over the category 'locationid'
         $query->select('locationid.title AS locationid');
         $query->join('LEFT', '#__categories AS locationid ON locationid.id = a.locationid');
@@ -171,9 +172,9 @@ class DztourModeltours extends JModelList {
         //Filtering on_offer
 
         //Filtering typeid
-        $filter_typeid = $this->state->get("filter.typeid");
+        $filter_typeid = (int) $this->state->get("filter.typeid");
         if ($filter_typeid) {
-            $query->where("a.typeid = '".$db->escape($filter_typeid)."'");
+            $query->where("FIND_IN_SET(" . $db->escape($filter_typeid) . ", a.typeid)");
         }
 
         //Filtering locationid

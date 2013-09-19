@@ -216,7 +216,7 @@ if (!empty($this->extra_sidebar)) {
                     <?php foreach ($item->duration as $key => $value) echo $value.' '.$key.' '; ?>
                 </td>
                 <td>
-                    <?php echo $item->typeid; ?>
+                    <?php echo $item->types; ?>
                 </td>
                 <td>
                     <?php echo $item->locationid; ?>

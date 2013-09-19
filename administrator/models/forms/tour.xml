@@ -93,11 +93,10 @@
             </fieldset>
         </fields>
 
-        <field name="typeid" type="category"
+        <field name="typeid" type="category" multiple="true"
             label="COM_DZTOUR_FORM_LBL_TOUR_TYPEID"
             description="COM_DZTOUR_FORM_DESC_TOUR_TYPEID" 
-            extension="com_dztour.tours.typeid"> 
-            <option value="">COM_DZTOUR_OPTION_SELECT_TYPE</option>
+            extension="com_dztour.tours.typeid">
         </field>
  
         <field name="filter_typeid" type="category"
