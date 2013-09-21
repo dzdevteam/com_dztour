@@ -3,6 +3,7 @@
     <fieldset name="component"
         label="COM_DZTOUR_COMPONENT_LABEL"
         description="COM_DZTOUR_COMPONENT_DESC"
+        addfieldpath="administrator/components/com_dztour/models/fields/"
     >
         <field type="spacer" label="COM_DZTOUR_CONFIG_RECAPTCHA" />
         <field name="publickey"
@@ -12,8 +13,16 @@
         <field name="privatekey"
             type="text"
             label="COM_DZTOUR_CONFIG_LBL_RECAPTCHA_PRIVATE_KEY"
-            description="COM_DZTOUR_CONFIG_DESC_RECAPTCHA_PRIVATE_KEY" />
+            description="COM_DZTOUR_CONFIG_DESC_RECAPTCHA_PRIVATE_KEY" />        
         
+        <field type="spacer" label="COM_DZTOUR_CONFIG_MONETARY" />
+        <field 
+            name="currency" type="customlist" multiple="true"
+            label="COM_DZTOUR_CONFIG_LBL_CURRENCY"
+            description="COM_DZTOUR_CONFIG_DESC_CURRENCY" />
+    </fieldset>
+    
+    <fieldset name="notification" label="COM_DZTOUR_NOTIFICATION_LABEL">
         <field type="spacer" label="COM_DZTOUR_CONFIG_ADMIN_NOTIFICATION" />
         <field name="subject"
             type="text"
@@ -44,9 +53,7 @@
             default="" class="span6" rows="10"
             label="COM_DZTOUR_CONFIG_LBL_BODY"
             description="COM_DZTOUR_CONFIG_DESC_BODY" />
-        
     </fieldset>
-
     <fieldset name="permissions"
         description="JCONFIG_PERMISSIONS_DESC"
         label="JCONFIG_PERMISSIONS_LABEL"
