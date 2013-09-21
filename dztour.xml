@@ -39,10 +39,13 @@
         <folder>helpers</folder>
     </files>
     <languages folder="site">
-        
             <language tag="en-GB">language/en-GB.com_dztour.ini</language>
             <language tag="vi-VN">language/vi-VN.com_dztour.ini</language>
     </languages>
+    <media folder="media" destination="com_dztour">
+        <folder>css</folder>
+        <folder>js</folder>
+    </media>
     <administration>
         <menu img="components/com_dztour/assets/images/s_com_dztour.png" >COM_DZTOUR</menu>
         <submenu>

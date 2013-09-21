@@ -57,9 +57,9 @@ if ( (boolean) $this->params->get('show_order', 1) ) {
                 </ul>
             </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_TYPEID'); ?>:
-            <?php echo $this->item->typeid_title; ?></li>
+            <?php echo implode(', ', $this->item->type_titles); ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID'); ?>:
-            <?php echo $this->item->locationid_title; ?></li>
+            <?php echo $this->item->location_title; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DESCRIPTIONS'); ?>:
                 <ul>
                     <li>Short:<br />
