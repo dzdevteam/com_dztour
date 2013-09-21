@@ -127,10 +127,12 @@ class JFormFieldCustomList extends JFormFieldList
     {
         $options = array();
         
-        foreach($this->value as $key => $value) {
-            $options[$key] = new stdClass;
-            $options[$key]->value = $value;
-            $options[$key]->text = $value;
+        if (is_array($this->value)) {
+            foreach($this->value as $key => $value) {
+                $options[$key] = new stdClass;
+                $options[$key]->value = $value;
+                $options[$key]->text = $value;
+            }
         }
 
         // Merge any additional options in the XML definition.

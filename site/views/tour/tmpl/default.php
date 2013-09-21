@@ -47,9 +47,9 @@ if ( (boolean) $this->params->get('show_order', 1) ) {
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ON_OFFER'); ?>:
             <?php echo $this->item->on_offer; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_PRICE'); ?>:
-            <?php echo $this->item->price; ?></li>
+            <?php echo $this->item->price.' '.$this->item->params['currency'];?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_SALEOFF_PRICE'); ?>:
-            <?php echo $this->item->saleoff_price; ?></li>
+            <?php echo $this->item->saleoff_price.' '.$this->item->params['currency']; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DURATION'); ?>:
                 <ul>
                     <li><?php echo $this->item->duration['days']; ?> days</li>

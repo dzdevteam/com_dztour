@@ -38,7 +38,7 @@ class JFormFieldCurrencyList extends JFormFieldList
     {
         $options = array();
         
-        $currency_list = JComponentHelper::getParams('com_dztour')->get('currency',array('USD', 'VND'));
+        $currency_list = JComponentHelper::getParams('com_dztour')->get('currencylist',array('USD', 'VND'));
         foreach($currency_list as $key => $value) {
             $options[$key] = new stdClass;
             $options[$key]->value = $value;

@@ -17,7 +17,7 @@
         
         <field type="spacer" label="COM_DZTOUR_CONFIG_MONETARY" />
         <field 
-            name="currency" type="customlist" multiple="true"
+            name="currencylist" type="customlist" multiple="true"
             label="COM_DZTOUR_CONFIG_LBL_CURRENCY"
             description="COM_DZTOUR_CONFIG_DESC_CURRENCY" />
     </fieldset>

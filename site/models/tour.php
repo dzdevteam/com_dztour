@@ -101,6 +101,10 @@ class DztourModelTour extends JModelForm
                 $registry->loadString($this->_item->images);
                 $this->_item->images = $registry->toArray();
                 
+                $registry = new JRegistry();
+                $registry->loadString($this->_item->params);
+                $this->_item->params = $registry->toArray();
+                
                 // Prebuild
                 foreach (explode(',',$this->_item->typeid) as $typeid) {
                     $this->_item->types[$typeid]['title'] = $this->getCategoryName($typeid)->title;
