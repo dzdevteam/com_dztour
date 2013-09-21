@@ -34,10 +34,6 @@ class DztourViewTour extends JViewLegacy {
         $this->item = $this->get('Data');
         $this->form = $this->get('OrderForm');
         $this->params = $app->getParams('com_dztour');
-        
-        foreach (explode(',',$this->item->typeid) as $typeid)
-            $this->item->type_titles[] = $this->getModel()->getCategoryName($typeid)->title;
-        $this->item->location_title = $this->getModel()->getCategoryName($this->item->locationid)->title;
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {

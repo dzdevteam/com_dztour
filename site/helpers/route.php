@@ -33,6 +33,32 @@ abstract class DZTourHelperRoute
         return $link;
     }
     
+    /**
+     * @param interger The location id
+     */
+    public static function getLocationRoute($id)
+    {
+        $link = 'index.php?option=com_dztour&view=tours&filter_locationid='.(int) $id;
+        
+        if ($itemId = self::_findItemid(array('tours')))
+            $link .= '&Itemid='.$itemId;
+        
+        return $link;
+    }
+    
+    /**
+     * @param interger The type id
+     */
+    public static function getTypeRoute($id)
+    {
+        $link = 'index.php?option=com_dztour&view=tours&filter_typeid='.(int) $id;
+        
+        if ($itemId = self::_findItemid(array('tours')))
+            $link .= '&Itemid='.$itemId;
+        
+        return $link;
+    }
+    
     protected static function _findItemid($needle)
     {
         $app        = JFactory::getApplication();

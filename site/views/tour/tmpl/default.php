@@ -57,9 +57,16 @@ if ( (boolean) $this->params->get('show_order', 1) ) {
                 </ul>
             </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_TYPEID'); ?>:
-            <?php echo implode(', ', $this->item->type_titles); ?></li>
+            <?php 
+            $types = array();
+            foreach ($this->item->types as $type) { 
+                $types[] = "<a href='" . $type['link'] . "'>" . $type['title'] . "</a>";
+            }
+            echo implode(', ', $types);
+            ?>
+            </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID'); ?>:
-            <?php echo $this->item->location_title; ?></li>
+            <a href="<?php echo $this->item->location['link']; ?>"><?php echo $this->item->location['title']; ?></a></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DESCRIPTIONS'); ?>:
                 <ul>
                     <li>Short:<br />

@@ -107,12 +107,12 @@ class DztourModelTours extends JModelList {
         
         $this->setState('filter.access', true);
         
-        $type = $app->getUserStateFromRequest($this->context . '.filter.type', 'filter_typeid', $mergedParams->get('tours_typeid'));
+        $type = $app->input->get('filter_typeid', $mergedParams->get('tours_typeid'));
         if ($type) {
             $this->setState('filter.typeid', $type);
         }
         
-        $location = $app->getUserStateFromRequest($this->context . '.filter.location', 'filter_locationid', $mergedParams->get('tours_locationid'));
+        $location = $app->input->get('filter_locationid', $mergedParams->get('tours_locationid'));
         if ($location) {
             $this->setState('filter.locationid', $location);
         }
@@ -210,7 +210,7 @@ class DztourModelTours extends JModelList {
             if (!empty($where))
             $query->where( '(' . implode(' OR ', $where) . ')' );
         } elseif (is_numeric($filter_typeid)) {
-            $query->where('a.typeid = '.$filter_typeid);
+            $query->where("FIND_IN_SET($filter_typeid, a.typeid)");
         }
         
         //Filtering locationid
