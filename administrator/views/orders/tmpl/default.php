@@ -138,7 +138,7 @@ if (!empty($this->extra_sidebar)) {
                     
                 <?php if (isset($this->items[0]->id)): ?>
                     <th width="1%" class="nowrap center hidden-phone">
-                        <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+                        <?php echo JHtml::_('grid.sort', 'COM_DZTOUR_ORDERS_CODE', 'code', $listDirn, $listOrder); ?>
                     </th>
                 <?php endif; ?>
                 </tr>
@@ -238,7 +238,7 @@ if (!empty($this->extra_sidebar)) {
 
                 <?php if (isset($this->items[0]->id)): ?>
                     <td class="center hidden-phone">
-                        <?php echo (int) $item->id; ?>
+                        <?php echo $item->code; ?>
                     </td>
                 <?php endif; ?>
                 </tr>

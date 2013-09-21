@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT.'/controller.php';
 require_once JPATH_COMPONENT.'/helpers/dztour.php';
+require_once JPATH_COMPONENT.'/helpers/route.php';
 /**
  * Tour controller class.
  */
@@ -72,7 +73,7 @@ class DztourControllerTour extends DztourController
         }
         
         // Attempt to save data
-        if (!$model->save($validData)) {
+        if (!($validData['id'] = $model->save($validData))) {
             throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', join(',', $model->getErrors())));
         }
         
@@ -98,7 +99,8 @@ class DztourControllerTour extends DztourController
                 '<h1>%subject$s</h1>
                 <br />Order information:
                 <ul>
-                    <li>Tour: %tour$s</li>
+                    <li>Code: %code$s</li>
+                    <li>Tour: <a href="%link$s">%tour$s</a></li>
                     <li>Adults: %adults$s</li>
                     <li>Children: %children$s</li>
                     <li>Start Date: %start_date$s</li>
@@ -114,11 +116,13 @@ class DztourControllerTour extends DztourController
                 </ul>');
             $validData['tour'] = DZTourHelper::getTourName($validData['tourid']);
             $validData['subject'] = $params->get('subject', 'A new order has just been placed!');
+            $validData['code'] = $validData['id'].'O'.$validData['tourid'].'T';
+            $validData['link'] = JRoute::_(DZTourHelperRoute::getTourRoute($validData['tourid']), true, -1);
             $body = DZTourHelper::sprintf($body, $validData);
             $mailer->setBody($body);
             
             // Send mail
-            // TODO No errors should be displayed to customers
+            // NOTE No errors should be displayed to customers
             $response = $mailer->send();
 //             if ($response instanceof Exception) {
 //                 throw $response;
@@ -140,7 +144,8 @@ class DztourControllerTour extends DztourController
                 '<h1>%subject$s</h1>
                 <br />Order information:
                 <ul>
-                    <li>Tour: %tour$s</li>
+                    <li>Code: %code$s</li>
+                    <li>Tour: <a href="%link$s">%tour$s</a></li>
                     <li>Adults: %adults$s</li>
                     <li>Children: %children$s</li>
                     <li>Start Date: %start_date$s</li>
@@ -154,14 +159,13 @@ class DztourControllerTour extends DztourController
                     <li>Phone: %phone$s</li>
                     <li>Address: %address$s</li>
                 </ul>');
-            $validData['tour'] = DZTourHelper::getTourName($validData['tourid']);
             $validData['subject'] = $params->get('confirmsubject', 'You have ordered a tour from our service!');
             $body = DZTourHelper::sprintf($body, $validData);
             $mailer->setBody($body);
             
             // Send mail
             $response = $mailer->send();
-            // TODO No errors should be displayed to customers
+            // NOTE No errors should be displayed to customers
 //             if ($response instanceof Exception) {
 //                 throw $response;
 //             } elseif (empty($response)) {
