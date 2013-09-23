@@ -59,6 +59,19 @@ abstract class DZTourHelperRoute
         return $link;
     }
     
+    /**
+     * Get search route
+     */
+    public static function getSearchRoute()
+    {
+        $link = 'index.php?option=com_dztour&view=search';
+        
+        if ($itemId = self::_findItemid(array('search'))) {
+            $link .= '&Itemid='.$itemId;
+        }
+        
+        return $link;
+    }
     protected static function _findItemid($needle)
     {
         $app        = JFactory::getApplication();
