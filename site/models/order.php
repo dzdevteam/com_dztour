@@ -16,7 +16,7 @@ jimport('joomla.event.dispatcher');
 /**
  * Dztour model.
  */
-class DztourModelTour extends JModelForm
+class DztourModelOrder extends JModelForm
 {
     
     var $_item = null;
@@ -34,18 +34,18 @@ class DztourModelTour extends JModelForm
 
         // Load state from the request userState on edit or from the passed variable on default
         if (JFactory::getApplication()->input->get('layout') == 'edit') {
-            $id = JFactory::getApplication()->getUserState('com_dztour.edit.tour.id');
+            $id = JFactory::getApplication()->getUserState('com_dztour.edit.order.id');
         } else {
             $id = JFactory::getApplication()->input->get('id');
-            JFactory::getApplication()->setUserState('com_dztour.edit.tour.id', $id);
+            JFactory::getApplication()->setUserState('com_dztour.edit.order.id', $id);
         }
-        $this->setState('tour.id', $id);
+        $this->setState('order.id', $id);
 
         // Load the parameters.
         $params = $app->getParams();
         $params_array = $params->toArray();
         if(isset($params_array['item_id'])){
-            $this->setState('tour.id', $params_array['item_id']);
+            $this->setState('order.id', $params_array['item_id']);
         }
         $this->setState('params', $params);
 
@@ -66,7 +66,7 @@ class DztourModelTour extends JModelForm
             $this->_item = false;
 
             if (empty($id)) {
-                $id = $this->getState('tour.id');
+                $id = $this->getState('order.id');
             }
 
             // Get a level row instance.
@@ -86,19 +86,6 @@ class DztourModelTour extends JModelForm
                 // Convert the JTable to a clean JObject.
                 $properties = $table->getProperties(1);
                 $this->_item = JArrayHelper::toObject($properties, 'JObject');
-                
-                // Convert json encoded fields to array
-                $registry = new JRegistry();
-                $registry->loadString($this->_item->duration);
-                $this->_item->duration = $registry->toArray();
-                
-                $registry = new JRegistry();
-                $registry->loadString($this->_item->descriptions);
-                $this->_item->descriptions = $registry->toArray();
-                
-                $registry = new JRegistry();
-                $registry->loadString($this->_item->images);
-                $this->_item->images = $registry->toArray();
             } elseif ($error = $table->getError()) {
                 $this->setError($error);
             }
@@ -107,18 +94,12 @@ class DztourModelTour extends JModelForm
         return $this->_item;
     }
     
-    public function getTable($type = 'Tour', $prefix = 'DztourTable', $config = array())
+    public function getTable($type = 'Order', $prefix = 'DZTourTable', $config = array())
     {   
         $this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
         return JTable::getInstance($type, $prefix, $config);
     }     
 
-    public function getOrderForm()
-    {
-        jimport('joomla.form.form');
-        JForm::addFormPath(JPATH_COMPONENT.'/models/forms');
-        return JForm::getInstance('com_dztour.order', 'order', array('control' => 'order'));        
-    }
     /**
      * Method to check in an item.
      *
@@ -193,7 +174,7 @@ class DztourModelTour extends JModelForm
     public function getForm($data = array(), $loadData = true)
     {
         // Get the form.
-        $form = $this->loadForm('com_dztour.tour', 'tour', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_dztour.order', 'order', array('control' => 'order', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
@@ -223,20 +204,20 @@ class DztourModelTour extends JModelForm
      */
     public function save($data)
     {
-        $id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('tour.id');
+        $id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('order.id');
         $state = (!empty($data['state'])) ? 1 : 0;
         $user = JFactory::getUser();
 
         if($id) {
             //Check the user can edit this item
-            $authorised = $user->authorise('core.edit', 'com_dztour.tour.'.$id) || $authorised = $user->authorise('core.edit.own', 'com_dztour.tour.'.$id);
-            if($user->authorise('core.edit.state', 'com_dztour.tour.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            $authorised = $user->authorise('core.edit', 'com_dztour.order.'.$id) || $authorised = $user->authorise('core.edit.own', 'com_dztour.order.'.$id);
+            if($user->authorise('core.edit.state', 'com_dztour.order.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         } else {
             //Check the user can create new items in this section
             $authorised = $user->authorise('core.create', 'com_dztour');
-            if($user->authorise('core.edit.state', 'com_dztour.tour.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
+            if($user->authorise('core.edit.state', 'com_dztour.order.'.$id) !== true && $state == 1){ //The user cannot edit the state of the item.
                 $data['state'] = 0;
             }
         }
@@ -248,7 +229,7 @@ class DztourModelTour extends JModelForm
         
         $table = $this->getTable();
         if ($table->save($data) === true) {
-            return $id;
+            return $table->id;
         } else {
             return false;
         }

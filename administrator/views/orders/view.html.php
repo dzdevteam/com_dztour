@@ -75,8 +75,8 @@ class DztourViewOrders extends JViewLegacy
 
             if (isset($this->items[0]->state)) {
                 JToolBarHelper::divider();
-                JToolBarHelper::custom('orders.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-                JToolBarHelper::custom('orders.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+                JToolBarHelper::custom('orders.publish', 'publish.png', 'publish_f2.png','COM_DZTOUR_CONFIRM', true);
+                JToolBarHelper::custom('orders.unpublish', 'unpublish.png', 'unpublish_f2.png', 'COM_DZTOUR_UNCONFIRM', true);
             } else if (isset($this->items[0])) {
                 //If this component does not use state then show a direct delete button as we can not trash
                 JToolBarHelper::deleteList('', 'orders.delete','JTOOLBAR_DELETE');
@@ -97,7 +97,7 @@ class DztourViewOrders extends JViewLegacy
                 JToolBarHelper::deleteList('', 'orders.delete','JTOOLBAR_EMPTY_TRASH');
                 JToolBarHelper::divider();
             } else if ($canDo->get('core.edit.state')) {
-                JToolBarHelper::trash('orders.trash','JTOOLBAR_TRASH');
+                JToolBarHelper::trash('orders.trash','COM_DZTOUR_CANCEL');
                 JToolBarHelper::divider();
             }
         }
@@ -113,6 +113,7 @@ class DztourViewOrders extends JViewLegacy
                 //Filter for the field ".tourid;
         jimport('joomla.form.form');
         $options = array();
+        $options[] = JHtml::_('select.option', "", JText::_('COM_DZTOUR_OPTION_SELECT_TOUR'));
         JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
         $form = JForm::getInstance('com_dztour.order', 'order');
 
@@ -145,20 +146,34 @@ class DztourViewOrders extends JViewLegacy
                 }
             }
         }
-
+        
         JHtmlSidebar::addFilter(
             'Tour',
             'filter_tourid',
             JHtml::_('select.options', $options, "value", "text", $this->state->get('filter.tourid')),
             true
         );
+        
+        $options = array();
+        $options[0]         = new stdClass();
+        $options[0]->value  = 1;
+        $options[0]->text   = JText::_('COM_DZTOUR_OPTION_CONFIRMED');
+        $options[1]         = new stdClass();
+        $options[1]->value  = 0;
+        $options[1]->text   = JText::_('COM_DZTOUR_OPTION_PENDING');
+        $options[2]         = new stdClass();
+        $options[2]->value  = 2;
+        $options[2]->text   = JText::_('COM_DZTOUR_OPTION_ARCHIVED');
+        $options[3]         = new stdClass();
+        $options[3]->value  = -2;
+        $options[3]->text   = JText::_('COM_DZTOUR_OPTION_CANCELLED');
         JHtmlSidebar::addFilter(
 
             JText::_('JOPTION_SELECT_PUBLISHED'),
 
             'filter_published',
 
-            JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true)
+            JHtml::_('select.options', $options, "value", "text", $this->state->get('filter.state'), true)
 
         );
 
@@ -170,17 +185,14 @@ class DztourViewOrders extends JViewLegacy
         return array(
         'a.id' => JText::_('JGRID_HEADING_ID'),
         'a.tourid' => JText::_('COM_DZTOUR_ORDERS_TOURID'),
-        'a.state' => JText::_('JSTATUS'),
-        'a.checked_out' => JText::_('COM_DZTOUR_ORDERS_CHECKED_OUT'),
-        'a.checked_out_time' => JText::_('COM_DZTOUR_ORDERS_CHECKED_OUT_TIME'),
-        'a.name' => JText::_('COM_DZTOUR_ORDERS_NAME'),
-        'a.phone' => JText::_('COM_DZTOUR_ORDERS_PHONE'),
-        'a.address' => JText::_('COM_DZTOUR_ORDERS_ADDRESS'),
+        'a.state' => JText::_('JSTATUS'),        
+        'a.name' => JText::_('COM_DZTOUR_ORDERS_NAME'),        
         'a.email' => JText::_('COM_DZTOUR_ORDERS_EMAIL'),
         'a.adults' => JText::_('COM_DZTOUR_ORDERS_ADULTS'),
         'a.children' => JText::_('COM_DZTOUR_ORDERS_CHILDREN'),
+        'a.start_date' => JText::_('COM_DZTOUR_ORDERS_START_DATE'),
         'a.end_date' => JText::_('COM_DZTOUR_ORDERS_END_DATE'),
-        'a.comment' => JText::_('COM_DZTOUR_ORDERS_COMMENT'),
+        'a.created' => JText::_('COM_DZTOUR_ORDERS_CREATED'),
         );
     }
 

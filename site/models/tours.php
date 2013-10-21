@@ -10,12 +10,15 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
+require_once JPATH_SITE.'/components/com_dztour/helpers/route.php';
 
 /**
  * Methods supporting a list of Dztour records.
  */
 class DztourModelTours extends JModelList {
 
+    protected $context = 'com_dztour';
+    
     /**
      * Constructor.
      *
@@ -24,6 +27,27 @@ class DztourModelTours extends JModelList {
      * @since    1.6
      */
     public function __construct($config = array()) {
+        if (empty($config['filter_fields'])) {
+            $config['filter_fields'] = array(
+                'id', 'a.id',
+                'ordering', 'a.ordering',
+                'state', 'a.state',
+                'language', 'a.language',
+                'created', 'a.created',
+                'created_by', 'a.created_by',
+                'modified', 'a.modified',
+                'modified_by', 'a.modified_by',
+                'title', 'a.title',
+                'alias', 'a.alias',
+                'featured', 'a.featured',
+                'on_offer', 'a.on_offer',
+                'price', 'a.price',
+                'saleoff_price', 'a.saleoff_price',
+                'typeid', 'a.typeid',
+                'locationid', 'a.locationid'
+            );
+        }
+        
         parent::__construct($config);
     }
 
@@ -39,20 +63,72 @@ class DztourModelTours extends JModelList {
         // Initialise variables.
         $app = JFactory::getApplication();
 
-        // List state information
-        $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-        $this->setState('list.limit', $limit);
+        // Load the parameters. Merge Global and Menu Item params into new object
+        $params = $app->getParams();
+        $menuParams = new JRegistry;
 
-        $limitstart = JFactory::getApplication()->input->getInt('limitstart', 0);
-        $this->setState('list.start', $limitstart);
-
-        
-        if(empty($ordering)) {
-            $ordering = 'a.ordering';
+        if ($menu = $app->getMenu()->getActive())
+        {
+            $menuParams->loadString($menu->params);
         }
 
-        // List state information.
-        parent::populateState($ordering, $direction);
+        $mergedParams = clone $menuParams;
+        $mergedParams->merge($params);
+
+        $this->setState('params', $mergedParams);
+
+        // List state information
+        $limit = $app->getUserStateFromRequest($this->context . '.list.limit', 'limit', $mergedParams->get('tours_limit', 12));
+        $this->setState('list.limit', $limit);
+
+        $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+        $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
+        $this->setState('list.start', $limitstart);
+
+        // Check if the ordering field is in the white list, otherwise use the incoming value.
+        $value = $mergedParams->get('tours_order_by', 'created');
+        if (!in_array($value, $this->filter_fields))
+        {
+            $value = $ordering;
+            $app->setUserState($this->context . '.ordercol', $value);
+        }
+        $this->setState('list.ordering', $value);
+
+        // Check if the ordering direction is valid, otherwise use the incoming value.
+        $value = $app->getUserStateFromRequest($this->context . '.orderdirn', 'filter_order_Dir', $mergedParams->get('tours_order_direction', 'DESC'));
+        if (!in_array(strtoupper($value), array('ASC', 'DESC', '')))
+        {
+            $value = $direction;
+            $app->setUserState($this->context . '.orderdirn', $value);
+        }
+        $this->setState('list.direction', $value);
+
+        $this->setState('filter.language', JLanguageMultilang::isEnabled());
+        
+        $this->setState('filter.access', true);
+        
+        $type = $app->getUserStateFromRequest($this->context . '.filter.type', 'filter_typeid', $mergedParams->get('tours_typeid'));
+        if ($type) {
+            $this->setState('filter.typeid', $type);
+        }
+        
+        $location = $app->getUserStateFromRequest($this->context . '.filter.location', 'filter_locationid', $mergedParams->get('tours_locationid'));
+        if ($location) {
+            $this->setState('filter.locationid', $location);
+        }
+        
+        $tags = $app->getUserStateFromRequest($this->context . '.filter.tags', 'filter_tags', $mergedParams->get('tours_tags', array()));
+        if (!empty($tags)) {
+            $this->setState('filter.tags', $tags);
+        }
+        
+        $display_items = $app->getUserStateFromRequest($this->context . '.filter.display_items', 'filter_display_items', $mergedParams->get('tours_display_items', 'all'));
+        
+        $this->setState('filter.display_items', $display_items);
+        
+        $types = $app->getUserStateFromRequest($this->context . '.filter.special_types', 'filter_special_types', $mergedParams->get('tours_special_types', array('featured')));
+        foreach($types as $type)
+            $this->setState('filter.' . $type, true);
     }
 
     /**
@@ -76,19 +152,19 @@ class DztourModelTours extends JModelList {
         $query->from('`#__dztour_tours` AS a');
 
         
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+        // Join over the users for the checked out user.
+        $query->select('uc.name AS editor');
+        $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
     
         // Join over the created by field 'created_by'
         $query->select('created_by.name AS created_by');
         $query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
         // Join over the category 'typeid'
-        $query->select('typeid.title AS typeid_title');
-        $query->join('LEFT', '#__categories AS typeid ON typeid.id = a.typeid');
+        $query->select('t.title AS typeid_title');
+        $query->join('LEFT', '#__categories AS t ON t.id = a.typeid');
         // Join over the category 'locationid'
-        $query->select('locationid.title AS locationid_title');
-        $query->join('LEFT', '#__categories AS locationid ON locationid.id = a.locationid');
+        $query->select('l.title AS locationid_title');
+        $query->join('LEFT', '#__categories AS l ON l.id = a.locationid');
         
 
         // Filter by search in title
@@ -100,35 +176,86 @@ class DztourModelTours extends JModelList {
                 $search = $db->Quote('%' . $db->escape($search, true) . '%');
                 $query->where('( a.title LIKE '.$search.' )');
             }
-        }
-
-        
+        }        
 
         //Filtering access
         $filter_access = $this->state->get("filter.access");
         if ($filter_access) {
-            $query->where("a.access = '".$filter_access."'");
+            $user = JFactory::getUser();
+            $groups = implode(',', $user->getAuthorisedViewLevels());
+            $query->where('a.access IN (' . $groups . ')')
+                ->where('t.access IN (' . $groups . ')')
+                ->where('l.access IN (' . $groups . ')');
         }
 
-        //Filtering on_offer
-
+        // Filter by type
+        if ($this->getState('filter.display_items', 'all') == 'special') {
+            $special = array();
+            if ($this->getState('filter.featured', false))
+                $special[] = 'featured = 1';
+            if ($this->getState('filter.on_offer', false))
+                $special[] = 'on_offer = 1';
+            if ($this->getState('filter.saleoff', false))
+                $special[] = 'saleoff_price != NULL';
+            if (!empty($special))
+                $query->where('(' . implode(' OR ', $special) . ')');
+        }
+        
         //Filtering typeid
         $filter_typeid = $this->state->get("filter.typeid");
-        if ($filter_typeid) {
-            $query->where("a.typeid = '".$filter_typeid."'");
+        if (is_array($filter_typeid)) {
+            $where = array();
+            foreach ($filter_typeid as $typeid)
+                $where[] = "FIND_IN_SET($typeid, a.typeid)";
+            if (!empty($where))
+            $query->where( '(' . implode(' OR ', $where) . ')' );
+        } elseif (is_numeric($filter_typeid)) {
+            $query->where('a.typeid = '.$filter_typeid);
         }
-
+        
         //Filtering locationid
-        $filter_locationid = $this->state->get("filter.locationid");
-        if ($filter_locationid) {
-            $query->where("a.locationid = '".$filter_locationid."'");
+        $filter_locationid = $this->getState('filter.locationid', 'root');
+        if (is_numeric($filter_locationid)) {
+            // Add subcategories check
+            $includeSubcategories = $this->getState('filter.sublocations', true);
+            
+            if ($includeSubcategories) {
+                $subQuery = $db->getQuery(true)
+                               ->select('sub.id')
+                               ->from('#__categories as sub')
+                               ->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt')
+                               ->where('this.id = ' . (int) $filter_locationid);
+                $query->where("( a.locationid = ". (int) $filter_locationid . " OR a.locationid IN (" . (string) $subQuery . ") )");
+            } else {
+                $query->where("a.locationid = ". (int) $filter_locationid);
+            }
         }
-
+        
+        // Filter by tags
+        $filter_tags = $this->getState('filter.tags', array());
+        if (!empty($filter_tags) && is_array($filter_tags)) {
+            JArrayHelper::toInteger($filter_tags);
+            $query->join('INNER', '#__contentitem_tag_map as ct ON ct.content_item_id = a.id AND ct.type_alias = \'com_dztour.tour\' AND tag_id IN (' . implode(',', $filter_tags) . ')');
+        }
+        
+        // Filter by language
+        if ($this->getState('filter.language')) {
+            $query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+        }
+        
+        // Add the list ordering clause.
+        $query->order($this->getState('list.ordering', 'created') . ' ' . $this->getState('list.direction', 'DESC'));
         return $query;
     }
 
     public function getItems() {
-        return parent::getItems();
+        $items = parent::getItems();
+        
+        foreach ($items as &$item) {
+            $item->link = DZTourHelperRoute::getTourRoute($item->id);
+        }
+        
+        return $items;
     }
 
 }

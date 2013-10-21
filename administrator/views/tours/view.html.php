@@ -129,14 +129,14 @@ class DztourViewTours extends JViewLegacy
         );
 
         JHtmlSidebar::addFilter(
-            JText::_("JOPTION_SELECT_CATEGORY"),
+            JText::_("COM_DZTOUR_OPTION_SELECT_TYPE"),
             'filter_typeid',
             JHtml::_('select.options', JHtml::_('category.options', 'com_dztour.tours.typeid'), "value", "text", $this->state->get('filter.typeid'))
 
         );
 
         JHtmlSidebar::addFilter(
-            JText::_("JOPTION_SELECT_CATEGORY"),
+            JText::_("COM_DZTOUR_OPTION_SELECT_LOCATION"),
             'filter_locationid',
             JHtml::_('select.options', JHtml::_('category.options', 'com_dztour.tours.locationid'), "value", "text", $this->state->get('filter.locationid'))
 
@@ -152,15 +152,12 @@ class DztourViewTours extends JViewLegacy
         'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
         'a.state' => JText::_('JSTATUS'),
         'a.access' => JText::_('COM_DZTOUR_TOURS_ACCESS'),
-        'a.checked_out' => JText::_('COM_DZTOUR_TOURS_CHECKED_OUT'),
-        'a.checked_out_time' => JText::_('COM_DZTOUR_TOURS_CHECKED_OUT_TIME'),
         'a.created_by' => JText::_('COM_DZTOUR_TOURS_CREATED_BY'),
         'a.title' => JText::_('COM_DZTOUR_TOURS_TITLE'),
         'a.featured' => JText::_('COM_DZTOUR_TOURS_FEATURED'),
         'a.on_offer' => JText::_('COM_DZTOUR_TOURS_ON_OFFER'),
         'a.price' => JText::_('COM_DZTOUR_TOURS_PRICE'),
         'a.saleoff_price' => JText::_('COM_DZTOUR_TOURS_SALEOFF_PRICE'),
-        'a.duration' => JText::_('COM_DZTOUR_TOURS_DURATION'),
         'a.typeid' => JText::_('COM_DZTOUR_TOURS_TYPEID'),
         'a.locationid' => JText::_('COM_DZTOUR_TOURS_LOCATIONID'),
         );

@@ -26,22 +26,16 @@ class DztourHelper
             $vName == 'tours'
         );
         JHtmlSidebar::addEntry(
-            'Categories (Tours - Type)',
+            JText::_('COM_DZTOUR_TITLE_TYPES'),
             "index.php?option=com_categories&extension=com_dztour.tours.typeid",
-            $vName == 'categories.tours'
-        );
-        
-if ($vName=='categories.tours.typeid') {            
-JToolBarHelper::title('DZ Tours Management: Categories (Tours - Type)');        
-}       JHtmlSidebar::addEntry(
-            'Categories (Tours - Location)',
+            $vName == 'categories.tours' && JFactory::getApplication()->input->get('extension') == 'com_dztour.tours.typeid'
+        );   
+        JHtmlSidebar::addEntry(
+            JText::_('COM_DZTOUR_TITLE_LOCATIONS'),
             "index.php?option=com_categories&extension=com_dztour.tours.locationid",
-            $vName == 'categories.tours'
+            $vName == 'categories.tours' && JFactory::getApplication()->input->get('extension') == 'com_dztour.tours.locationid'
         );
-        
-if ($vName=='categories.tours.locationid') {            
-JToolBarHelper::title('DZ Tours Management: Categories (Tours - Location)');        
-}       JHtmlSidebar::addEntry(
+        JHtmlSidebar::addEntry(
             JText::_('COM_DZTOUR_TITLE_ORDERS'),
             'index.php?option=com_dztour&view=orders',
             $vName == 'orders'

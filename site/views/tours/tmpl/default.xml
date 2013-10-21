@@ -5,4 +5,69 @@
                         <![CDATA[COM_DZTOUR_TITLE_LIST_VIEW_TOURS_DESC]]>
         </message>
     </layout>
+    <fields name="params">
+        <fieldset name="filtering" label="COM_DZTOUR_CONFIG_FIELDSET_FILTERING">
+            <field
+                name="tours_display_items"
+                type="radio" default="all" class="btn-group"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_DISPLAY_ITEMS"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_DISPLAY_ITEMS">
+                <option value="all">COM_DZTOUR_OPTION_ALL_ITEMS</option>
+                <option value="special">COM_DZTOUR_OPTION_SPECIAL_ITEMS</option>
+            </field>
+            <field
+                name="tours_special_types"
+                type="list" multiple="true" default="featured"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_SPECIAL_TYPES"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_SPECIAL_TYPES">
+                <option value="featured">COM_DZTOUR_OPTION_FEATURED</option>
+                <option value="on_offer">COM_DZTOUR_OPTION_ON_OFFER</option>
+                <option value="saleoff">COM_DZTOUR_OPTION_SALEOFF</option>
+            </field>
+            
+            <field type="spacer" />
+            <field
+                name="tours_typeid" multiple="true"
+                type="category" extension="com_dztour.tours.typeid"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_TYPE"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_TYPE">
+            </field>
+            <field
+                name="tours_locationid"
+                type="category" extension="com_dztour.tours.locationid"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_LOCATION"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_LOCATION">
+                <option value="">COM_DZTOUR_OPTION_SELECT_LOCATION</option>
+            </field>
+            <field
+                name="tours_tags" type="tag" 
+                multiple="true" custom="deny" mode="nested"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_TAGS"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_TAGS" />
+            
+            <field type="spacer" />
+            <field
+                name="tours_order_by" 
+                type="list" default="created"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_ORDERBY"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_ORDERBY">
+                <option value="created">COM_DZTOUR_OPTION_CREATED</option>
+                <option value="title">COM_DZTOUR_OPTION_TITLE</option>
+                <option value="ordering">COM_DZTOUR_OPTION_ORDERING</option>
+            </field>
+            <field
+                name="tours_order_direction" 
+                type="list" default="DESC"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_ORDER_DIRECTION"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_ORDER_DIRECTION">
+                <option value="ASC">JGLOBAL_ORDER_ASCENDING</option>
+                <option value="DESC">JGLOBAL_ORDER_DESCENDING</option>
+            </field>
+            <field
+                name="tours_limit" type="text"
+                default="12" filter="int"
+                label="COM_DZTOUR_CONFIG_TOURS_LBL_LIMIT"
+                description="COM_DZTOUR_CONFIG_TOURS_DESC_LIMIT" />
+        </fieldset>
+    </fields>
 </metadata>

@@ -116,6 +116,37 @@ class DztourTableorder extends JTable {
     }
 
     /**
+     * Overrides JTable::store to set modified data and user id.
+     *
+     * @param   boolean  $updateNulls  True to update fields even if they are null.
+     *
+     * @return  boolean  True on success.
+     */
+    public function store($updateNulls = false)
+    {
+        $date = JFactory::getDate();
+        $user = JFactory::getUser();
+        
+        if ($this->id) {
+            $this->modified = $date->toSql();
+            $this->modified_by = $user->get('id');
+        } else {
+            if (empty($this->created))
+                $this->created = $date->toSql();
+            if (empty($this->created_by))
+                $this->created_by = $user->get('id');
+        }
+        
+        $oldRules = $this->getRules();
+        if (empty($oldRules))
+        {
+            $this->setRules('{}');
+        }
+        
+        return parent::store($updateNulls);
+    }
+    
+    /**
      * Method to set the publishing state for a row or list of rows in the database
      * table.  The method respects checked out rows by other users and will attempt
      * to checkin rows that it can after adjustments are made.

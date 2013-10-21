@@ -70,23 +70,24 @@
             class="validate-numeric"
             filter="uint" /> 
 
-       <field name="children" type="text"
+        <field name="children" type="text"
             label="COM_DZTOUR_FORM_LBL_ORDER_CHILDREN"
             description="COM_DZTOUR_FORM_DESC_ORDER_CHILDREN" 
             required="true" 
             class="validate-numeric"
             filter="uint" /> 
 
-       <field name="start_date" type="calendar"
+        <field name="start_date" type="text"
             label="COM_DZTOUR_FORM_LBL_ORDER_START_DATE"
             description="COM_DZTOUR_FORM_DESC_ORDER_START_DATE" 
             required="true"  /> 
 
-       <field name="end_date" type="calendar"
+        <field name="end_date" type="text"
+            readonly="true"
             label="COM_DZTOUR_FORM_LBL_ORDER_END_DATE"
             description="COM_DZTOUR_FORM_DESC_ORDER_END_DATE"/> 
 
-       <field name="comment" type="textarea"
+        <field name="comment" type="textarea"
             label="COM_DZTOUR_FORM_LBL_ORDER_COMMENT"
             description="COM_DZTOUR_FORM_DESC_ORDER_COMMENT" 
             cols="100"

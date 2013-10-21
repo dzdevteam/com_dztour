@@ -53,34 +53,77 @@ $document->addStyleSheet('components/com_dztour/assets/css/dztour.css');
 <form action="<?php echo JRoute::_('index.php?option=com_dztour&layout=edit&id=' . (int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="order-form" class="form-validate">
     <div class="row-fluid">
         <div class="span10 form-horizontal">
-            <fieldset class="adminform">
+            <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
-                            <div class="control-group">
+            <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_DZTOUR_DETAILS', true)); ?>
+            <div class="span6">
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('tourid'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('tourid'); ?></div>
+                </div>
+
+                <?php
+                    foreach((array)$this->item->tourid as $value): 
+                        if(!is_array($value)):
+                            echo '<input type="hidden" class="tourid" name="jform[touridhidden]['.$value.']" value="'.$value.'" />';
+                        endif;
+                    endforeach;
+                ?>  
+
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('name'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('phone'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('phone'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('email'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('email'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('address'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('address'); ?></div>
+                </div>
+            </div>
+            <div class="span6">
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('adults'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('adults'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('children'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('children'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('start_date'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('start_date'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('end_date'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('end_date'); ?></div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"><?php echo $this->form->getLabel('comment'); ?></div>
+                    <div class="controls"><?php echo $this->form->getInput('comment'); ?></div>
+                </div>
+            </div>
+            
+            <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+            <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_DZTOUR_PUBLISHING', true)); ?>
+            <div class="control-group">
                 <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('id'); ?></div>
             </div>
             <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('tourid'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('tourid'); ?></div>
-            </div>
-
-            <?php
-                foreach((array)$this->item->tourid as $value): 
-                    if(!is_array($value)):
-                        echo '<input type="hidden" class="tourid" name="jform[touridhidden]['.$value.']" value="'.$value.'" />';
-                    endif;
-                endforeach;
-            ?>          <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('state'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('state'); ?></div>
+                <div class="control-label"><?php echo $this->form->getLabel('created'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('created'); ?></div>
             </div>
             <div class="control-group">
                 <div class="control-label"><?php echo $this->form->getLabel('created_by'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('created_by'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('created'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('created'); ?></div>
             </div>
             <div class="control-group">
                 <div class="control-label"><?php echo $this->form->getLabel('modified'); ?></div>
@@ -90,60 +133,28 @@ $document->addStyleSheet('components/com_dztour/assets/css/dztour.css');
                 <div class="control-label"><?php echo $this->form->getLabel('modified_by'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('modified_by'); ?></div>
             </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('name'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('phone'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('phone'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('address'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('address'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('email'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('email'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('adults'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('adults'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('children'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('children'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('start_date'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('start_date'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('end_date'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('end_date'); ?></div>
-            </div>
-            <div class="control-group">
-                <div class="control-label"><?php echo $this->form->getLabel('comment'); ?></div>
-                <div class="controls"><?php echo $this->form->getInput('comment'); ?></div>
-            </div>
-                <input type="hidden" name="jform[params]" value="<?php echo $this->item->params; ?>" />
+            <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-
-            </fieldset>
-        </div>
-
-        <div class="clr"></div>
-
-<?php if (JFactory::getUser()->authorise('core.admin','dztour')): ?>
-    <div class="fltlft" style="width:86%;">
-        <fieldset class="panelform">
+            <?php if (JFactory::getUser()->authorise('core.admin','com_dztour')): ?>
+            <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_DZTOUR_RULES', true)); ?>
+            <div class="fltlft" style="width:86%;">
+            <fieldset class="panelform">
             <?php echo JHtml::_('sliders.start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
             <?php echo JHtml::_('sliders.panel', JText::_('ACL Configuration'), 'access-rules'); ?>
             <?php echo $this->form->getInput('rules'); ?>
             <?php echo JHtml::_('sliders.end'); ?>
-        </fieldset>
-    </div>
-<?php endif; ?>
+            </fieldset>
+            </div>
+            <?php echo JHtml::_('bootstrap.endTab'); ?>
+            <?php endif; ?>
+
+            <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+        </div>
+
+        <div class="clr"></div>
+        <!-- Begin Sidebar -->
+        <?php echo JLayoutHelper::render('joomla.edit.details', $this); ?>
+        <!-- End Sidebar -->
 
         <input type="hidden" name="task" value="" />
         <?php echo JHtml::_('form.token'); ?>

@@ -22,6 +22,9 @@ class DztourTabletour extends JTable {
      */
     public function __construct(&$db) {
         parent::__construct('#__dztour_tours', 'id', $db);
+        
+        JTableObserverTags::createObserver($this, array('typeAlias' => 'com_dztour.tour'));
+        JObserverMapper::addObserverClassToClass('JTableObserverTags', 'DZTourTableTour', array('typeAlias' => 'com_dztour.tour'));
     }
 
     /**
@@ -33,8 +36,6 @@ class DztourTabletour extends JTable {
      * @since   1.5
      */
     public function bind($array, $ignore = '') {
-
-        
         $input = JFactory::getApplication()->input;
         $task = $input->getString('task', '');
         if(($task == 'save' || $task == 'apply') && (!JFactory::getUser()->authorise('core.edit.state','com_dztour.tour.'.$array['id']) && $array['state'] == 1)){
@@ -54,6 +55,12 @@ class DztourTabletour extends JTable {
         if (!isset($array['on_offer'])){
             $array['on_offer'] = 0;
         }
+        
+        // Multiple types
+        if (isset($array['typeid']) && is_array($array['typeid'])) {
+            $array['typeid'] = implode(',', $array['typeid']);
+        }
+        
 
         if (isset($array['params']) && is_array($array['params'])) {
             $registry = new JRegistry();
@@ -66,6 +73,25 @@ class DztourTabletour extends JTable {
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
         }
+        
+        if (isset($array['images']) && is_array($array['images'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['images']);
+            $array['images'] = (string) $registry;
+        }
+        
+        if (isset($array['descriptions']) && is_array($array['descriptions'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['descriptions']);
+            $array['descriptions'] = (string) $registry;
+        }
+        
+        if (isset($array['duration']) && is_array($array['duration'])) {
+            $registry = new JRegistry();
+            $registry->loadArray($array['duration']);
+            $array['duration'] = (string) $registry;
+        }
+        
         if(!JFactory::getUser()->authorise('core.admin', 'com_dztour.tour.'.$array['id'])){
             $actions = JFactory::getACL()->getActions('com_dztour','tour');
             $default_actions = JFactory::getACL()->getAssetRules('com_dztour.tour.'.$array['id'])->getData();
@@ -109,7 +135,66 @@ class DztourTabletour extends JTable {
             $this->ordering = self::getNextOrder();
         }
 
+        // Check for unique alias
+        // Checking valid title and alias
+        if (trim($this->title) == '')
+        {
+            $this->setError(JText::_('COM_DZTOUR_WARNING_PROVIDE_VALID_NAME'));
+            return false;
+        }
+
+        if (trim($this->alias) == '')
+        {
+            $this->alias = $this->title;
+        }
+
+        $this->alias = $this->_stringURLSafe($this->alias);
+
+        if (trim(str_replace('-', '', $this->alias)) == '')
+        {
+            $this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+        }
+
+        // Verify that the alias is unique
+        $table = JTable::getInstance('Tour', 'DZTourTable');
+        if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
+        {
+            $this->setError(JText::_('COM_DZTOUR_ERROR_UNIQUE_ALIAS'));
+            return false;
+        }
+        
         return parent::check();
+    }
+    
+    /**
+     * Overrides JTable::store to set modified data and user id.
+     *
+     * @param   boolean  $updateNulls  True to update fields even if they are null.
+     *
+     * @return  boolean  True on success.
+     */
+    public function store($updateNulls = false)
+    {
+        $date = JFactory::getDate();
+        $user = JFactory::getUser();
+        
+        if ($this->id) {
+            $this->modified = $date->toSql();
+            $this->modified_by = $user->get('id');
+        } else {
+            if (empty($this->created))
+                $this->created = $date->toSql();
+            if (empty($this->created_by))
+                $this->created_by = $user->get('id');
+        }
+        
+        $oldRules = $this->getRules();
+        if (empty($oldRules))
+        {
+            $this->setRules('{}');
+        }
+        
+        return parent::store($updateNulls);
     }
 
     /**
@@ -217,6 +302,39 @@ class DztourTabletour extends JTable {
         return $assetParentId;
     }
     
-    
+    /**
+     * Convert string into URL safe one
+     * @param string $url
+     *
+     * @return string Safe URL
+     */
+    protected function _stringURLSafe($url) {
+        // Support russian
+        $tr = array(
+            "А"=>"a","Б"=>"b","В"=>"v","Г"=>"g",
+            "Д"=>"d","Е"=>"e","Ж"=>"j","З"=>"z","И"=>"i",
+            "Й"=>"y","К"=>"k","Л"=>"l","М"=>"m","Н"=>"n",
+            "О"=>"o","П"=>"p","Р"=>"r","С"=>"s","Т"=>"t",
+            "У"=>"u","Ф"=>"f","Х"=>"h","Ц"=>"ts","Ч"=>"ch",
+            "Ш"=>"sh","Щ"=>"sch","Ъ"=>"","Ы"=>"yi","Ь"=>"",
+            "Э"=>"e","Ю"=>"yu","Я"=>"ya","а"=>"a","б"=>"b",
+            "в"=>"v","г"=>"g","д"=>"d","е"=>"e","ж"=>"j",
+            "з"=>"z","и"=>"i","й"=>"y","к"=>"k","л"=>"l",
+            "м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+            "с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"h",
+            "ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"sch","ъ"=>"y",
+            "ы"=>"yi","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya",
+        );
+        $url= strtr($url,$tr);
+        
+        // Other languages
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $url);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_| -]+/", '-', $clean);
+
+        return $clean;
+    }
 
 }

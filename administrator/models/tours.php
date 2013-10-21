@@ -26,10 +26,9 @@ class DztourModeltours extends JModelList {
     public function __construct($config = array()) {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
-                                'id', 'a.id',
+                'id', 'a.id',
                 'ordering', 'a.ordering',
                 'state', 'a.state',
-                'access', 'a.access',
                 'language', 'a.language',
                 'created', 'a.created',
                 'created_by', 'a.created_by',
@@ -41,16 +40,8 @@ class DztourModeltours extends JModelList {
                 'on_offer', 'a.on_offer',
                 'price', 'a.price',
                 'saleoff_price', 'a.saleoff_price',
-                'duration', 'a.duration',
                 'typeid', 'a.typeid',
-                'locationid', 'a.locationid',
-                'descriptions', 'a.descriptions',
-                'images', 'a.images',
-                'metadesc', 'a.metadesc',
-                'metakey', 'a.metakey',
-                'metadata', 'a.metadata',
-                'params', 'a.params',
-
+                'locationid', 'a.locationid'
             );
         }
 
@@ -142,8 +133,9 @@ class DztourModeltours extends JModelList {
         $query->select('created_by.name AS created_by');
         $query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
         // Join over the category 'typeid'
-        $query->select('typeid.title AS typeid');
-        $query->join('LEFT', '#__categories AS typeid ON typeid.id = a.typeid');
+        $query->select("GROUP_CONCAT(t.title SEPARATOR ', ') AS types");
+        $query->join('LEFT', "#__categories AS t ON FIND_IN_SET(t.id, a.typeid)");
+        $query->group('a.id');
         // Join over the category 'locationid'
         $query->select('locationid.title AS locationid');
         $query->join('LEFT', '#__categories AS locationid ON locationid.id = a.locationid');
@@ -180,9 +172,9 @@ class DztourModeltours extends JModelList {
         //Filtering on_offer
 
         //Filtering typeid
-        $filter_typeid = $this->state->get("filter.typeid");
+        $filter_typeid = (int) $this->state->get("filter.typeid");
         if ($filter_typeid) {
-            $query->where("a.typeid = '".$db->escape($filter_typeid)."'");
+            $query->where("FIND_IN_SET(" . $db->escape($filter_typeid) . ", a.typeid)");
         }
 
         //Filtering locationid
@@ -205,6 +197,11 @@ class DztourModeltours extends JModelList {
     public function getItems() {
         $items = parent::getItems();
         
+        foreach ($items as &$item) {
+            $registry = new JRegistry();
+            $registry->loadString($item->duration);
+            $item->duration = $registry->toArray();
+        }
         return $items;
     }
 

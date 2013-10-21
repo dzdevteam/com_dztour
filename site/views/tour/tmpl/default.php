@@ -12,36 +12,32 @@ defined('_JEXEC') or die;
 //Load admin language file
 $lang = JFactory::getLanguage();
 $lang->load('com_dztour', JPATH_ADMINISTRATOR);
-
+if ( (boolean) $this->params->get('show_order', 1) ) {
+    JHtml::_('jquery.framework'); // Ensure jquery to be loaded first
+    
+    // JQuery Validation
+    JHtml::_('script', 'com_dztour/jquery.validate.min.js', true, true);
+    JHtml::_('script', 'com_dztour/messages_vi.js', true, true);
+    
+    // Bootstrap datepicker
+    JHtml::_('script', 'com_dztour/bootstrap-datepicker.js',  true, true);
+    JHtml::_('stylesheet', 'com_dztour/datepicker.css', true, true);
+    
+    // reCaptcha
+    require_once JPATH_COMPONENT.'/helpers/recaptchalib.php';
+    $publickey = $this->params->get('publickey');
+    
+    // Order function
+    JFactory::getDocument()->addScriptDeclaration('Joomla.loadingGIF = "'.JUri::root().'/media/system/images/modal/spinner.gif'.'"');
+    JHtml::_('script', 'com_dztour/order.js', true, true);
+        
+}
 ?>
 <?php if ($this->item) : ?>
 
     <div class="item_fields">
 
         <ul class="fields_list">
-
-                        <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ID'); ?>:
-            <?php echo $this->item->id; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ORDERING'); ?>:
-            <?php echo $this->item->ordering; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_STATE'); ?>:
-            <?php echo $this->item->state; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ACCESS'); ?>:
-            <?php echo $this->item->access; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_LANGUAGE'); ?>:
-            <?php echo $this->item->language; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_CHECKED_OUT'); ?>:
-            <?php echo $this->item->checked_out; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_CHECKED_OUT_TIME'); ?>:
-            <?php echo $this->item->checked_out_time; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_CREATED'); ?>:
-            <?php echo $this->item->created; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_CREATED_BY'); ?>:
-            <?php echo $this->item->created_by; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_MODIFIED'); ?>:
-            <?php echo $this->item->modified; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_MODIFIED_BY'); ?>:
-            <?php echo $this->item->modified_by; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_TITLE'); ?>:
             <?php echo $this->item->title; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ALIAS'); ?>:
@@ -55,29 +51,90 @@ $lang->load('com_dztour', JPATH_ADMINISTRATOR);
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_SALEOFF_PRICE'); ?>:
             <?php echo $this->item->saleoff_price; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DURATION'); ?>:
-            <?php echo $this->item->duration; ?></li>
+                <ul>
+                    <li><?php echo $this->item->duration['days']; ?> days</li>
+                    <li><?php echo $this->item->duration['nights']; ?> nights</li>
+                </ul>
+            </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_TYPEID'); ?>:
             <?php echo $this->item->typeid_title; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID'); ?>:
             <?php echo $this->item->locationid_title; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DESCRIPTIONS'); ?>:
-            <?php echo $this->item->descriptions; ?></li>
+                <ul>
+                    <li>Short:<br />
+                        <?php echo $this->item->descriptions['short']; ?>
+                    </li>
+                    <li>Long:<br />
+                        <?php echo $this->item->descriptions['long']; ?>
+                    </li>
+                    <li>Other:<br />
+                        <?php echo $this->item->descriptions['other']; ?>
+                    </li>
+                    <li>Price policy:<br />
+                        <?php echo $this->item->descriptions['price']; ?>
+                    </li>
+                </ul>
+            </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_IMAGES'); ?>:
-            <?php echo $this->item->images; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_METADESC'); ?>:
-            <?php echo $this->item->metadesc; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_METAKEY'); ?>:
-            <?php echo $this->item->metakey; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_METADATA'); ?>:
-            <?php echo $this->item->metadata; ?></li>
-            <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_PARAMS'); ?>:
-            <?php echo $this->item->params; ?></li>
-
-
+                <ul>
+                    <li>Intro: <?php echo $this->item->images['intro']; ?></li>
+                    <li>Intro alt: <?php echo $this->item->images['intro_alt']; ?></li>
+                    <li>Full: <?php echo $this->item->images['full']; ?></li>
+                    <li>Full alt: <?php echo $this->item->images['full_alt']; ?></li>
+                    <li>Album: <?php echo $this->item->images['album']; ?></li>
+                </ul>
+            </li>
         </ul>
 
     </div>
     
+    <?php if ( (boolean) $this->params->get('show_order', 1) ) : ?>
+    <form id="order-form" action="<?php echo JRoute::_('index.php?option=com_dztour&task=tour.order&format=json'); ?>" method="POST">
+        <input type="hidden" name="order[id]" value="0" />
+        <input type="hidden" name="order[tourid]" value="<?php echo $this->item->id; ?>" />
+        <input type="hidden" name="order[state]" value="0" />
+        <legend>Order this tour</legend>
+        <div id="alert-area"></div>
+        <div class="row-fluid">
+            <div class="span6">
+                <?php echo $this->form->getLabel('name'); ?>
+                <?php echo $this->form->getInput('name'); ?>
+                
+                <?php echo $this->form->getLabel('email'); ?>
+                <?php echo $this->form->getInput('email'); ?>
+                
+                <?php echo $this->form->getLabel('phone'); ?>
+                <?php echo $this->form->getInput('phone'); ?>
+                
+                <?php echo $this->form->getLabel('address'); ?>
+                <?php echo $this->form->getInput('address'); ?>
+                
+                <?php echo recaptcha_get_html($publickey); ?>
+            </div>
+            <div class="span6">
+                
+                <?php echo $this->form->getLabel('adults'); ?>
+                <?php echo $this->form->getInput('adults'); ?>
+                
+                <?php echo $this->form->getLabel('children'); ?>
+                <?php echo $this->form->getInput('children'); ?>
+                
+                <?php echo $this->form->getLabel('start_date'); ?>
+                <?php echo $this->form->getInput('start_date'); ?>
+                
+                <?php echo $this->form->getLabel('end_date'); ?>
+                <input type="text" name="order[end_date]" id="order_end_date" data-duration="<?php echo (int) $this->item->duration['nights']; ?>" readonly="readonly" class="valid">
+                
+                <?php echo $this->form->getLabel('comment'); ?>
+                <?php echo $this->form->getInput('comment'); ?>
+                
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Order</button>
+        <?php echo JHtml::_('form.token'); ?>
+    </form>
+    <?php endif; ?>
 <?php
 else:
     echo JText::_('COM_DZTOUR_ITEM_NOT_LOADED');
