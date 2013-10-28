@@ -5,6 +5,7 @@ jQuery(document).ready(function(){
         },
         displayLoading = function() {
             jQuery("#alert-area").html('<img src="' + Joomla.loadingGIF + '" />');
+            jQuery("#alert-area")[0].scrollIntoView();
         }
         disable_handler = function() { return false; };
     

@@ -28,7 +28,8 @@ class com_dztourInstallerScript
             '<h1>%subject$s</h1>
             <br />Order information:
             <ul>
-                <li>Tour: %tour$s</li>
+                <li>Code: %code$s</li>
+                <li>Tour: <a href="%link$s">%tour$s</a></li>
                 <li>Adults: %adults$s</li>
                 <li>Children: %children$s</li>
                 <li>Start Date: %start_date$s</li>

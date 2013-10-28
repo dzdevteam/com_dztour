@@ -47,9 +47,9 @@ if ( (boolean) $this->params->get('show_order', 1) ) {
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_ON_OFFER'); ?>:
             <?php echo $this->item->on_offer; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_PRICE'); ?>:
-            <?php echo $this->item->price; ?></li>
+            <?php echo $this->item->price.' '.$this->item->params['currency'];?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_SALEOFF_PRICE'); ?>:
-            <?php echo $this->item->saleoff_price; ?></li>
+            <?php echo $this->item->saleoff_price.' '.$this->item->params['currency']; ?></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DURATION'); ?>:
                 <ul>
                     <li><?php echo $this->item->duration['days']; ?> days</li>
@@ -57,9 +57,16 @@ if ( (boolean) $this->params->get('show_order', 1) ) {
                 </ul>
             </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_TYPEID'); ?>:
-            <?php echo $this->item->typeid_title; ?></li>
+            <?php 
+            $types = array();
+            foreach ($this->item->types as $type) { 
+                $types[] = "<a href='" . $type['link'] . "'>" . $type['title'] . "</a>";
+            }
+            echo implode(', ', $types);
+            ?>
+            </li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_LOCATIONID'); ?>:
-            <?php echo $this->item->locationid_title; ?></li>
+            <a href="<?php echo $this->item->location['link']; ?>"><?php echo $this->item->location['title']; ?></a></li>
             <li><?php echo JText::_('COM_DZTOUR_FORM_LBL_TOUR_DESCRIPTIONS'); ?>:
                 <ul>
                     <li>Short:<br />

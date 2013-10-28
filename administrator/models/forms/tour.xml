@@ -197,7 +197,15 @@
             </fieldset>
         </fields>
 
-        <fields name="params"></fields>
+        <fields name="params">
+            <fieldset name="params" addfieldpath="administrator/components/com_dztour/models/fields">
+                <field 
+                    name="currency"
+                    type="currencylist"
+                    label="COM_DZTOUR_FORM_LBL_TOUR_CURRENCY"
+                    description="COM_DZTOUR_FORM_DESC_TOUR_CURRENCY" />
+            </fieldset>
+        </fields>
 
         <field
             name="state"

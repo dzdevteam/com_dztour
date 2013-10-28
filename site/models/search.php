@@ -15,9 +15,9 @@ require_once JPATH_SITE.'/components/com_dztour/helpers/route.php';
 /**
  * Methods supporting a list of Dztour records.
  */
-class DztourModelTours extends JModelList {
+class DztourModelSearch extends JModelList {
 
-    protected $context = 'com_dztour';
+    protected $context = 'com_dztour.search';
     
     /**
      * Constructor.
@@ -58,7 +58,7 @@ class DztourModelTours extends JModelList {
      *
      * @since   1.6
      */
-    protected function populateState($ordering = null, $direction = null) {
+    protected function populateState($ordering = 'a.created', $direction = 'DESC') {
 
         // Initialise variables.
         $app = JFactory::getApplication();
@@ -78,7 +78,7 @@ class DztourModelTours extends JModelList {
         $this->setState('params', $mergedParams);
 
         // List state information
-        $limit = $app->getUserStateFromRequest($this->context . '.list.limit', 'limit', $mergedParams->get('tours_limit', 12));
+        $limit = $app->getUserStateFromRequest($this->context . '.list.limit', 'limit', $mergedParams->get('tours_limit', 10));
         $this->setState('list.limit', $limit);
 
         $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
@@ -86,7 +86,7 @@ class DztourModelTours extends JModelList {
         $this->setState('list.start', $limitstart);
 
         // Check if the ordering field is in the white list, otherwise use the incoming value.
-        $value = $mergedParams->get('tours_order_by', 'created');
+        $value = $app->getUserStateFromRequest($this->context . '.ordercol', 'filter_order', 'a.created');
         if (!in_array($value, $this->filter_fields))
         {
             $value = $ordering;
@@ -95,8 +95,8 @@ class DztourModelTours extends JModelList {
         $this->setState('list.ordering', $value);
 
         // Check if the ordering direction is valid, otherwise use the incoming value.
-        $value = $app->getUserStateFromRequest($this->context . '.orderdirn', 'filter_order_Dir', $mergedParams->get('tours_order_direction', 'DESC'));
-        if (!in_array(strtoupper($value), array('ASC', 'DESC', '')))
+        $value = $app->getUserStateFromRequest($this->context . '.orderdirn', 'filter_order_Dir', 'DESC');
+        if (!in_array(strtoupper($value), array('ASC', 'DESC')))
         {
             $value = $direction;
             $app->setUserState($this->context . '.orderdirn', $value);
@@ -107,28 +107,43 @@ class DztourModelTours extends JModelList {
         
         $this->setState('filter.access', true);
         
-        $type = $app->input->get('filter_typeid', $mergedParams->get('tours_typeid'));
+        $type = $app->getUserStateFromRequest($this->context . '.filter.typeid', 'filter_typeid', 0, 'int');
         if ($type) {
             $this->setState('filter.typeid', $type);
         }
         
-        $location = $app->input->get('filter_locationid', $mergedParams->get('tours_locationid'));
+        $location = $app->getUserStateFromRequest($this->context . '.filter.locationid', 'filter_locationid', 0, 'int');
         if ($location) {
             $this->setState('filter.locationid', $location);
         }
         
-        $tags = $app->getUserStateFromRequest($this->context . '.filter.tags', 'filter_tags', $mergedParams->get('tours_tags', array()));
-        if (!empty($tags)) {
-            $this->setState('filter.tags', $tags);
+        $min_price = $app->getUserStateFromRequest($this->context . '.filter.price.min', 'filter_price_min', 0, 'int');
+        if ($min_price) {
+            $this->setState('filter.price.min', $min_price);
         }
         
-        $display_items = $app->getUserStateFromRequest($this->context . '.filter.display_items', 'filter_display_items', $mergedParams->get('tours_display_items', 'all'));
+        $max_price = $app->getUserStateFromRequest($this->context . '.filter.price.max', 'filter_price_max', 0, 'int');
+        if ($max_price) {
+            $this->setState('filter.price.max', $max_price);
+        }
+        
+        $display_items = $app->getUserStateFromRequest($this->context . '.filter.display_items', 'filter_display_items', 'all');
         
         $this->setState('filter.display_items', $display_items);
         
-        $types = $app->getUserStateFromRequest($this->context . '.filter.special_types', 'filter_special_types', $mergedParams->get('tours_special_types', array('featured')));
+        $types = $app->getUserStateFromRequest($this->context . '.filter.special_types', 'filter_special_types', array('featured'), 'array');
         foreach($types as $type)
             $this->setState('filter.' . $type, true);
+        
+        $tags = $app->getUserStateFromRequest($this->context . '.filter.tags', 'filter_tags', array(), 'array');
+        if (!empty($tags) && !empty($tags[0])) {
+            $this->setState('filter.tags', $tags);
+        }
+        
+        // Search
+        $search = $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
+        if (!empty($search))
+            $this->setState('filter.search', $search);
     }
 
     /**
@@ -229,6 +244,16 @@ class DztourModelTours extends JModelList {
             } else {
                 $query->where("a.locationid = ". (int) $filter_locationid);
             }
+        }
+        
+        // Filter by price
+        $filter_price_min = $this->getState('filter.price.min', 0);
+        if ($filter_price_min) {
+            $query->where('a.price >= ' . (int) $filter_price_min);
+        }
+        $filter_price_max = $this->getState('filter.price.max', 0);
+        if ($filter_price_max) {
+            $query->where('a.price <= ' . (int) $filter_price_max);
         }
         
         // Filter by tags

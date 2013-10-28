@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modelform');
 jimport('joomla.event.dispatcher');
 
+require_once JPATH_SITE.'/components/com_dztour/helpers/route.php';
 /**
  * Dztour model.
  */
@@ -99,6 +100,20 @@ class DztourModelTour extends JModelForm
                 $registry = new JRegistry();
                 $registry->loadString($this->_item->images);
                 $this->_item->images = $registry->toArray();
+                
+                $registry = new JRegistry();
+                $registry->loadString($this->_item->params);
+                $this->_item->params = $registry->toArray();
+                
+                // Prebuild
+                foreach (explode(',',$this->_item->typeid) as $typeid) {
+                    $this->_item->types[$typeid]['title'] = $this->getCategoryName($typeid)->title;
+                    $this->_item->types[$typeid]['link'] = JRoute::_(DZTourHelperRoute::getTypeRoute($typeid));
+                    $this->_item->types[$typeid]['id'] = $typeid;
+                }
+                $this->_item->location['title'] = $this->getCategoryName($this->_item->locationid)->title;
+                $this->_item->location['link'] = JRoute::_(DZTourHelperRoute::getLocationRoute($this->_item->locationid));
+                $this->_item->location['id'] = $this->_item->locationid;
             } elseif ($error = $table->getError()) {
                 $this->setError($error);
             }

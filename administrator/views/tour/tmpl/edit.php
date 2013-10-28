@@ -97,6 +97,10 @@ $document->addStyleSheet('components/com_dztour/assets/css/dztour.css');
                         <div class="control-label"><?php echo $this->form->getLabel('saleoff_price'); ?></div>
                         <div class="controls"><?php echo $this->form->getInput('saleoff_price'); ?></div>
                     </div>
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $this->form->getLabel('currency', 'params'); ?></div>
+                        <div class="controls"><?php echo $this->form->getInput('currency', 'params'); ?></div>
+                    </div>
                 </div>
             </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>

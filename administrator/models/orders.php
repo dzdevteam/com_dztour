@@ -43,7 +43,7 @@ class DztourModelorders extends JModelList {
                 'end_date', 'a.end_date',
                 'comment', 'a.comment',
                 'params', 'a.params',
-
+                'code',
             );
         }
 
@@ -118,25 +118,27 @@ class DztourModelorders extends JModelList {
         $query->from('`#__dztour_orders` AS a');
 
         
-    // Join over the users for the checked out user.
-    $query->select('uc.name AS editor');
-    $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+        // Join over the users for the checked out user.
+        $query->select('uc.name AS editor');
+        $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
     
         // Join over the foreign key 'tourid'
-        $query->select('#__dztour_tours_748929.title AS tours_title_748929');
-        $query->join('LEFT', '#__dztour_tours AS #__dztour_tours_748929 ON #__dztour_tours_748929.id = a.tourid');
+        $query->select('t.title AS tours_title');
+        $query->join('LEFT', '#__dztour_tours AS t ON t.id = a.tourid');
         // Join over the user field 'created_by'
         $query->select('created_by.name AS created_by');
         $query->join('LEFT', '#__users AS created_by ON created_by.id = a.created_by');
-
         
-    // Filter by published state
-    $published = $this->getState('filter.state');
-    if (is_numeric($published)) {
-        $query->where('a.state = '.(int) $published);
-    } else if ($published === '') {
-        $query->where('(a.state IN (0, 1))');
-    }
+        // Compute order code
+        $query->select("CONCAT(a.id, 'O', a.tourid, 'T') as code");
+        
+        // Filter by published state
+        $published = $this->getState('filter.state');
+        if (is_numeric($published)) {
+            $query->where('a.state = '.(int) $published);
+        } else if ($published === '') {
+            $query->where('(a.state IN (0, 1))');
+        }
     
 
         // Filter by search in title
@@ -146,11 +148,9 @@ class DztourModelorders extends JModelList {
                 $query->where('a.id = ' . (int) substr($search, 3));
             } else {
                 $search = $db->Quote('%' . $db->escape($search, true) . '%');
-                
+                $query->where("(t.title LIKE $search OR a.name LIKE $search OR a.address LIKE $search OR a.comment LIKE $search OR CONCAT(a.id, 'O', a.tourid, 'T') LIKE $search)");
             }
         }
-
-        
 
         //Filtering tourid
         $filter_tourid = $this->state->get("filter.tourid");

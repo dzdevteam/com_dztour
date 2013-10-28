@@ -54,7 +54,7 @@ function DztourBuildRoute(&$query)
     
     if ($menuItem instanceof stdClass) { 
         // are we dealing with an item that is attached to a menu item?
-        if($menuItem->query['view'] == $query['view'] && isset($query['id']) && $menuItem->query['id'] == (int) $query['id'])
+        if($menuItem->query['view'] == $query['view'] && isset($query['id']) && isset($menuItem->query['id']) && $menuItem->query['id'] == (int) $query['id'])
         {
             unset($query['view']);
 
@@ -74,6 +74,47 @@ function DztourBuildRoute(&$query)
             unset($query['view']);
             $coupled = true;
         }
+    }
+    
+    if ($view == 'tours')
+    {
+        if (isset($query['filter_locationid'])) {
+            $categories = JCategories::getInstance('dztour.locations');
+            $location = $categories->get((int) $query['filter_locationid']);
+            
+            if (!$location) {
+                // Category not found
+                return $segments;
+            }
+            $location_array = array();
+            foreach($location->getPath() as $id) {
+                list($id, $alias) = explode(':', $id, 2);
+                $location_array[] = $alias;
+            }
+            
+            $segments[] = 'location/'. $location->id . ':' . implode('/', $location_array);
+            unset($query['filter_locationid']);
+        }
+        
+        if (isset($query['filter_typeid'])) {
+            $categories = JCategories::getInstance('dztour.types');
+            $type = $categories->get((int) $query['filter_typeid']);
+            
+            if (!$type) {
+                // Category not found
+                return $segments;
+            }
+            $type_array = array();
+            foreach($type->getPath() as $id) {
+                list($id, $alias) = explode(':', $id, 2);
+                $type_array[] = $alias;
+            }
+            
+            $segments[] = 'type/'. $type->id . ':' . implode('/', $type_array);
+            unset($query['filter_typeid']);
+        }
+        
+        unset($query['view']);
     }
     
 
@@ -158,8 +199,13 @@ function DztourParseRoute($segments)
     $count = count($segments);
     
     if ($count >= 2) {
-        $vars['id'] = (int) $segments[$count-1];
-        $vars['view'] = $segments[$count-2];
+        foreach ($segments as $key => $segment) {
+            if ($segment == 'location')
+                $vars['filter_locationid'] = (int) $segments[$key + 1];
+            else if ($segment == 'type')
+                $vars['filter_typeid'] = (int) $segments[$key + 1];
+        }
+        $vars['view'] = ($menuItem) ? $menuItem->query['view'] : $segments[0];
     } elseif ($count == 1) {
         if ($menuItem) {
             switch ($menuItem->query['view']) {
