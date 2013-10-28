@@ -27,7 +27,11 @@
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
-
+    <media folder="media" destination="com_dztour">
+        <folder>js</folder>
+        <folder>css</folder>
+        <filename>index.html</filename>
+    </media>
     <files folder="site">
         <filename>index.html</filename>
         <filename>dztour.php</filename>
